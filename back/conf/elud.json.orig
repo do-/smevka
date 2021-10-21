@@ -1,0 +1,14 @@
+{
+
+        "listen": {
+                "host"    : "127.0.0.1",
+                "port"    : 8000
+        },
+        
+        "smev": {
+		"converter_url": "http://..."
+        },
+
+        "logs": "/var/projects/smev_mock/back/logs"
+
+}

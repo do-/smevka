@@ -1,0 +1,13 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "content-disposition": "^0.5.3",
+    "saxophone": "^0.6.1",
+    "winston": "^3.3.3"
+  }
+}
