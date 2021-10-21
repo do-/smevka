@@ -1,5 +1,6 @@
 const winston    = require ('winston')
 const Dia        = require ('./Ext/Dia/Dia.js')
+const HTTP       = require ('./Ext/Dia/HTTP.js')
 const LogEvent   = require ('./Ext/Dia/Log/Events/Text.js')
 
 module.exports = class extends Dia.Config {
@@ -7,8 +8,10 @@ module.exports = class extends Dia.Config {
     constructor () {
         
         super (process.argv [2] || '../conf/elud.json', 'utf8')
-                                                        
-        this.pools = {}
+        
+        let conv = new HTTP ({url: this.smev.converter_url})
+
+        this.pools = {conv, last: {}}
 
     }
 
