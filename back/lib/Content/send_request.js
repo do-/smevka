@@ -12,22 +12,31 @@ do_reply_to_send_request:
 
 		if (!message_id) throw new Exception ('MessageID not detected')
 
-		last.message_id = message_id
+		last.id = message_id
 		
 		let [, tag] = /<((?:[0-9a-z]+:)?MessagePrimaryContent>)/.exec (body) || []
 		
 		if (!tag) throw new Error ('MessagePrimaryContent> not detected')
 		
 		let prim = body.split (tag) [1].replace (/<\/$/, '').trim ()
-
-//darn (prim)
 		
-let rsid = 30442
+		let type = /^<.*?>/.exec (prim) [0] // MessagePrimaryContent's 1st inner tag
+			.split (/\s/) [0]               // before attibutes
+			.slice (1)                      // without opening bracket
+			.split (':').pop ()             // if prefixed, local name only
+			.replace (/Request$/, '')       // method, not message name
+			.replace (/[A-Z]/g,             // CamelCase to under_scores
+				(m, o, s) => (o ? '_' : '') + m.toLowerCase ()
+			)		
+		
+		let rsid = await this.fork ({type, part: 'rsid'})
+
+		last.type = type
 
 		let json = await conv.response ({path: `/${rsid}/xmlRequestToJson`}, prim)
-		
+
 		last.data = JSON.parse (json)
-darn (last)
+
 		return (
 `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
   <SOAP-ENV:Header/>
