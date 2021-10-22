@@ -1,41 +1,53 @@
 const {Readable} = require ('stream')
+const Saxophone = require ('saxophone')
 
 module.exports = {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-get_primary_content_of_soap_message:
+do_parse_soap_message:
 
     async function () {
-    
+
     	let {rq: {xml}} = this
 
-		let [, tag] = /<((?:[0-9a-z]+:)?MessagePrimaryContent>)/.exec (xml) || []
-		
-		if (!tag) throw new Error ('MessagePrimaryContent> not detected')
-		
-		return xml.split (tag) [1].replace (/<\/$/, '').trim ()
-		
-    },
-    
-////////////////////////////////////////////////////////////////////////////////
+    	let prim = '', type, flag = false
 
-get_type_of_soap_message:
+    	const eat = s => !flag ? 0 : /^\s+$/.test (s) ? 0 : prim += s
 
-    async function () {
-    
-    	let {rq: {xml}} = this
-		
-		return /^<.*?>/.exec (xml) [0]    // MessagePrimaryContent's 1st inner tag
-			.split (/\s/) [0]                  // before attibutes
-			.slice (1)                         // without opening bracket
-			.split (':').pop ()                // if prefixed, local name only
+    	const is_prim = tag => /^(\w+:)?MessagePrimaryContent$/.test (tag.name)
+
+    	const from_name = tag =>
+    		tag.name.split (':').pop ()        // if prefixed, local name only
 			.replace (/Re(quest|sponse)$/, '') // method, not message name
 			.replace (/[A-Z]/g,                // CamelCase to under_scores
 				(m, o, s) => (o ? '_' : '') + m.toLowerCase ()
 			)
+    	
+    	return new Promise ((ok, fail) => {
 
-    },
+			new Saxophone ().on ('error', fail)
+			
+				.on ('text', o => eat (o.contents))
+
+				.on ('tagopen', tag => {
+					if (flag && !type) type = from_name (tag)
+					eat (`<${tag.name}${tag.attrs}${tag.isSelfClosing ? '/' : ''}>`)
+					if (is_prim (tag)) flag = true
+				})
+
+				.on ('tagclose', tag => {
+					if (is_prim (tag)) flag = false
+					eat (`</${tag.name}>`)
+				})
+
+				.on ('finish', () => ok ({prim, type}))
+
+				.parse (xml)
+
+    	})
+    	
+	},
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -44,10 +56,8 @@ get_json_of_soap_message:
     async function () {
     
     	let {conv, rq: {xml}} = this
-    	
-		let prim = await this.fork ({part: 'primary_content'}, {xml})
 
-		let type = await this.fork ({part: 'type'}, {xml: prim})
+		let {prim, type} = await this.call ('do_parse_soap_message') //await this.fork ({action: 'parse', part: null}, {xml})
 
 		let rsid = await this.fork ({type, part: 'rsid'})
 		

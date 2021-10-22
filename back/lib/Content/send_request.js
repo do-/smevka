@@ -14,9 +14,7 @@ do_reply_to_send_request:
 
 		last.id = message_id	
 
-		let prim = await this.fork ({type: 'soap_message', part: 'primary_content'}, {xml: body})
-
-		let type = await this.fork ({type: 'soap_message', part: 'type'}, {xml: prim})
+		let {prim, type} = await this.fork ({type: 'soap_message', action: 'parse'}, {xml: body})
 
 		let rsid = await this.fork ({type, part: 'rsid'})
 
