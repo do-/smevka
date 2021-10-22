@@ -51,10 +51,17 @@ get_json_of_soap_message:
 
 		let rsid = await this.fork ({type, part: 'rsid'})
 		
-		let json = await conv.response ({path: `/${rsid}/xmlResponseToJson`}, xml)
- 
-//		let json = JSON.stringify ({rsid}, 0, 2)
+		let path = 
+			/GetResponseResponse/.test (xml) ? 'xmlResponseToJson' :
+			/SendRequestRequest/.test (xml) ? 'xmlRequestToJson' :
+			null
+			
+		if (!path) throw ('No SendRequestRequest nor GetResponseResponse detected')
 		
+		if (path == 'xmlRequestToJson') xml = prim
+			
+		let json = await conv.response ({path: `/${rsid}/${path}`}, xml)
+ 		
 		return Readable.from (json)
 
     },
