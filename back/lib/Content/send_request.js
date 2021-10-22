@@ -12,23 +12,12 @@ do_reply_to_send_request:
 
 		if (!message_id) throw new Exception ('MessageID not detected')
 
-		last.id = message_id
-		
-		let [, tag] = /<((?:[0-9a-z]+:)?MessagePrimaryContent>)/.exec (body) || []
-		
-		if (!tag) throw new Error ('MessagePrimaryContent> not detected')
-		
-		let prim = body.split (tag) [1].replace (/<\/$/, '').trim ()
-		
-		let type = /^<.*?>/.exec (prim) [0] // MessagePrimaryContent's 1st inner tag
-			.split (/\s/) [0]               // before attibutes
-			.slice (1)                      // without opening bracket
-			.split (':').pop ()             // if prefixed, local name only
-			.replace (/Request$/, '')       // method, not message name
-			.replace (/[A-Z]/g,             // CamelCase to under_scores
-				(m, o, s) => (o ? '_' : '') + m.toLowerCase ()
-			)		
-		
+		last.id = message_id	
+
+		let prim = await this.fork ({type: 'soap_message', part: 'primary_content'}, {xml: body})
+
+		let type = await this.fork ({type: 'soap_message', part: 'type'}, {xml: prim})
+
 		let rsid = await this.fork ({type, part: 'rsid'})
 
 		last.type = type
