@@ -24,7 +24,7 @@ do_reply_to_send_request:
 
 		let json = await conv.response ({path: `/${rsid}/xmlRequestToJson`}, prim)
 
-		last.data = JSON.parse (json)
+		last.data = Object.values (JSON.parse (json)) [0]
 
 		return (
 `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
