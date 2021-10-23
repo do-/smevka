@@ -1,21 +1,21 @@
 <html>
 	<head>
 		<title>Заглушка для СМЭВ</title>
+		<script src="__/js.js"></script>
+		<link rel="stylesheet" type="text/css" href="__/css.css">
 	</head>
-	<body>
-		<table border=0 cellspacing=0 cellpadding=0 width=100% height=100%>
-			<tr width=50%>
-				<td>
+	<body onload="main()">
+		<table cellspacing=0 cellpadding=0>
+			<tr>
+				<td width=40%>
 					<form target=result action=_back method=post style="height:100%;margin:0;">
 						<input type=hidden name=type value=soap_message>
 						<input type=hidden name=part value=json>
-						<textarea name=xml style="width:100%;height:calc(100% - 50px);">
-						</textarea>
-						<input type=submit>
+						<textarea name=xml placeholder="&lt;SOAP-ENV:Envelope blah-bla-blah..."></textarea>
 					</form>
 				</td>
 				<td>
-					<iframe name=result width=100% height=100%>
+					<iframe name=result>
 					</iframe>
 				</td>
 			</tr>
