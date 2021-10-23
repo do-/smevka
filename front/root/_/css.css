@@ -24,3 +24,7 @@ iframe {
 	border: solid 1px #ccc;
 	border-left: 0;
 }
+
+input[type=file]{
+	display: none;
+}

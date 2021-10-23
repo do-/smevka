@@ -8,6 +8,14 @@ function get_textarea () {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+function get_file_input () {
+
+	return document.querySelectorAll ('input[type=file]') [0]
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 function refresh () {
 
 	let txt = get_textarea ().value
@@ -39,7 +47,29 @@ function schedule () {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+function load () {
+
+	let reader = new FileReader ()
+	
+	reader.addEventListener ('load', () => {
+	
+		get_textarea ().value = reader.result
+		
+		refresh ()
+		
+	})
+	
+	reader.readAsText (get_file_input ().files [0])
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 function main () {
+
+	get_file_input ().addEventListener ('change', load)
+
+	get_textarea ().addEventListener ('dblclick', () => get_file_input ().click ())
 
 	for (let event of ['change', 'paste'])
 

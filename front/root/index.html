@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Заглушка для СМЭВ</title>
+		<title>СМЭВка</title>
 		<script src="__/js.js"></script>
 		<link rel="stylesheet" type="text/css" href="__/css.css">
 	</head>
@@ -11,7 +11,9 @@
 					<form target=result action=_back method=post style="height:100%;margin:0;">
 						<input type=hidden name=type value=soap_message>
 						<input type=hidden name=part value=json>
-						<textarea name=xml placeholder="&lt;SOAP-ENV:Envelope blah-bla-blah..."></textarea>
+						<textarea autofocus name=xml placeholder="&lt;SOAP-ENV:Envelope blah-bla-blah...
+
+...or double click to load file"></textarea>
 					</form>
 				</td>
 				<td>
@@ -20,5 +22,6 @@
 				</td>
 			</tr>
 		</table>
+		<input type=file name=file accept=".xml">
 	</body>
 </html>
