@@ -48,32 +48,5 @@ do_parse_soap_message:
     	})
     	
 	},
-
-////////////////////////////////////////////////////////////////////////////////
-
-get_json_of_soap_message:
-
-    async function () {
-    
-    	let {conv, rq: {xml}} = this
-
-		let {prim, type} = await this.call ('do_parse_soap_message') //await this.fork ({action: 'parse', part: null}, {xml})
-
-		let rsid = await this.fork ({type, part: 'rsid'})
-		
-		let path = 
-			/GetResponseResponse/.test (xml) ? 'xmlResponseToJson' :
-			/SendRequestRequest/.test (xml) ? 'xmlRequestToJson' :
-			null
-			
-		if (!path) throw ('No SendRequestRequest nor GetResponseResponse detected')
-		
-		if (path == 'xmlRequestToJson') xml = prim
-			
-		let json = await conv.response ({path: `/${rsid}/${path}`}, xml)
- 		
-		return Readable.from (json)
-
-    },
         
 }
