@@ -67,6 +67,58 @@ get_response_of_export_debt_requests:
 				   "response" : {
 					  "type" : "PROVIDED",
 					  "has-debt" : "false",
+					  
+						"debt-info" : [
+							{
+							
+								person: {
+								   "firstname" : "Петр",
+								   "lastname" : "Петров",
+								   "middlename" : "Петрович",
+								   "snils" : "11111111146",
+								   "document" : {
+									  "type" : "1",
+									  "series" : "1235",
+									  "number" : "123455"
+								   }
+								},
+								
+								"document" : [
+									{
+								     	"type" : "1",
+								     	"attachment" : {
+											"metadata" : {
+											   "name" : "1.doc",
+											   "description" : "foo"
+											}
+								        }
+									},
+									{
+								     	"type" : "2",
+								     	"attachment" : {
+											"metadata" : {
+											   "name" : "2.xls",
+											   "description" : "bar"
+											}
+								        }
+									},									
+								]
+							},
+							{person: 
+								{
+								   "firstname" : "Сидор",
+								   "lastname" : "Сидоров",
+								   "middlename" : "Сидорович",
+								   "snils" : "11111111146",
+								   "document" : {
+									  "type" : "1",
+									  "series" : "1235",
+									  "number" : "123455"
+								   }
+								},
+							},
+						],
+					  
 					  "executor-info" : {
 						 "id" : "38a794b8-6ada-11eb-9439-0242ac130002",
 						 "fio" : "Герасимова Ольга Ивановна"
