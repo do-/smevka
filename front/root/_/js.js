@@ -18,23 +18,17 @@ function get_file_input () {
 
 function say (s) {
 
-	let {document} = window.document.querySelector ('iframe').contentWindow
-	
-	document.open ()
-	
-	document.writeln ('<pre>')
-	document.writeln (s)
-	document.writeln ('</pre>')
+	document.querySelector ('pre').textContent = s;
 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-function refresh () {
+async function refresh () {
 
-	let txt = get_textarea ().value
+	let body = get_textarea ().value
 
-	let doc = new DOMParser ().parseFromString (txt, 'application/xml')
+	let doc = new DOMParser ().parseFromString (body, 'application/xml')
 
 	if (doc.querySelector ('parsererror')) {
 
@@ -42,11 +36,13 @@ function refresh () {
 
 	}
 	else {
-	
-		let [form] = document.querySelectorAll ('form')
 		
-		form.submit ()
-
+		let response = await fetch ('/_back/?type=soap_message&part=json', {method: 'POST', body})
+  
+  		let {content} = await response.json ()
+  		
+  		say (JSON.stringify (content, null, 2))
+	
 	}
 
 }

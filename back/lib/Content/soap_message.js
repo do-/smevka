@@ -54,6 +54,8 @@ get_json_of_soap_message:
 
 	async function () {
 	
+		let xml = this.body
+
 		let local = s => {
 		
 			let pos = s.indexOf (':')
@@ -64,9 +66,7 @@ get_json_of_soap_message:
 	
 		const what = 'MessagePrimaryContent', is_it = s => s == what
 		
-		let flag = false
-	
-    	let {rq: {xml}} = this, stack = []
+		let flag = false, stack = []
 		
 		let on = () => stack.push ([new Map (), '']); on ()
 		
