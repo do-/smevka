@@ -54,12 +54,24 @@ get_json_of_soap_message:
 
 	async function () {
 	
-    	let {rq: {xml}} = this, stack = [], m2o = map => Object.fromEntries (map.entries ())
+		let local = s => {
+		
+			let pos = s.indexOf (':')
+			
+			return pos < 0 ? s : s.slice (pos + 1)
+		
+		}
+	
+		const what = 'MessagePrimaryContent', is_it = s => s == what
+		
+		let flag = false
+	
+    	let {rq: {xml}} = this, stack = []
 		
 		let on = () => stack.push ([new Map (), '']); on ()
 		
 		let app = value => {
-		
+				
 			value = value.replace (/\s+/g, ' ').trim (); if (!value) return
 			
 			stack [stack.length - 1] [1] += value
@@ -68,10 +80,6 @@ get_json_of_soap_message:
 		
 		let set = (key, value) => {
 			
-			if (/^x(mlns|si:)\b/.test (key)) return
-			
-			let pos = key.indexOf (':'); if (pos > -1) key = key.slice (pos + 1)
-
 			let [map] = stack [stack.length - 1]
 
 			if (!map.has (key)) return map.set (key, value)
@@ -83,46 +91,52 @@ get_json_of_soap_message:
  		}
 		
 		let off = name => {
-		
+
 			let [map, txt] = stack.pop ()
 			
-			set (name, map.size ? m2o (map) : txt)
+			set (name, map.size ? Object.fromEntries (map.entries ()) : txt)
 		
 		}				
 		
 		await new Promise ((ok, fail) => new Saxophone ().on ('error', fail).on ('finish', ok)			
-			.on ('text',     o => app (o.contents))
-			.on ('tagclose', tag => off (tag.name))
+			.on ('text',     o => {
+				if (flag) app (o.contents)
+			})
+			.on ('tagclose', tag => {
+			
+				let name = local (tag.name)
+				
+				if (!flag) return
+				
+				off (name)
+				
+				if (is_it (name)) flag = false
+				
+			})
 			.on ('tagopen',  tag => {
+
+				let name = local (tag.name)
+
+				if (!flag && is_it (name)) flag = true
+				
+				if (!flag) return
+
 				on ()
-				for (let [k, v] of Object.entries (Saxophone.parseAttrs (tag.attrs))) set (k, v)
-				if (tag.isSelfClosing) off (tag.name)
+
+				for (let [name, value] of Object.entries (Saxophone.parseAttrs (tag.attrs))) 
+
+					if (!/^x(mlns|si:)\b/.test (name)) 
+
+						set (local (name), value)
+
+				if (tag.isSelfClosing) off (name)
+			
 			})
 			.parse (xml)
 		)
 		
-		let result = m2o (stack [0] [0])
+		for (let v of stack [0] [0].values ()) return v
 		
-		let get_message_primary_content = o => {
-
-			if (typeof o != 'object') return null
-
-			let e = Object.entries (o); if (!e.length) return null
-
-			for (let [k, v] of e) {
-
-				if (k == 'MessagePrimaryContent') return v
-
-				let c = get_message_primary_content (v); if (c) return c
-
-			}
-
-			return null
-
-		}
-		
-		return get_message_primary_content (result)
-	
 	}
         
 }
