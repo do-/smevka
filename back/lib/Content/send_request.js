@@ -4,19 +4,15 @@ module.exports = {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-do_reply_to_send_request:
+do_register_send_request:
 
     async function () {
 
-    	let {conv, last, body} = this
+    	let {last, body} = this
 
-    	let {MessageID, MessagePrimaryContent} = (await XMLReader.get (body, {
-    		localName : 'SenderProvidedRequestData'
-    	}))
-
-    	last.id   = MessageID
+    	last.id = ZERO_UUID
     	
-    	let [[k, v]] = Object.entries (MessagePrimaryContent)
+    	let [[k, v]] = Object.entries (JSON.parse (body))
 
     	last.data = v
 
@@ -27,6 +23,29 @@ do_reply_to_send_request:
 			.replace (/[A-Z]/g,                // CamelCase to under_scores
 				(m, o) => (o ? '_' : '') + m.toLowerCase ()
 			)
+
+		return {}
+
+    },
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+do_reply_to_send_request:
+
+    async function () {
+
+    	let {conv, last, body} = this
+
+    	let {MessageID, MessagePrimaryContent} = (await XMLReader.get (body, {
+    		localName : 'SenderProvidedRequestData'
+    	}))
+    	
+    	this.body = JSON.stringify (MessagePrimaryContent)
+    	
+    	await this.call ('do_register_send_request')
+
+    	last.id = MessageID
 
 		return require ('fs').readFileSync ('./Static/send.xml')
 
