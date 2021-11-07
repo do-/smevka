@@ -18,7 +18,9 @@ get_response_of_export_debt_requests:
     
     	let {rq: {data}} = this
 
-		let request_data = data ["request-id"].map (request_id => {
+		let ids = data ["request-id"]; if (!Array.isArray (ids)) ids = [ids]
+
+		let request_data = ids.map (request_id => {
 		
 			return {
 				"request-id" : request_id,

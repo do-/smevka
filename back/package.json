@@ -8,6 +8,7 @@
   "dependencies": {
     "content-disposition": "^0.5.3",
     "saxophone": "^0.6.1",
+    "saxophone-object-stream": "git+https://github.com/do-/saxophone-object-stream.git",
     "winston": "^3.3.3"
   }
 }

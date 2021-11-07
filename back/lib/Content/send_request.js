@@ -1,3 +1,5 @@
+const {XMLReader} = require ('saxophone-object-stream')
+
 module.exports = {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -5,27 +7,29 @@ module.exports = {
 do_reply_to_send_request:
 
     async function () {
-    
+
     	let {conv, last, body} = this
+
+    	let {MessageID, MessagePrimaryContent} = (await XMLReader.get (body, {
+    		localName : 'SenderProvidedRequestData'
+    	}))
+
+    	last.id   = MessageID
     	
-		let [, message_id] = /MessageID>([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})</.exec (body) || []
+    	let [[k, v]] = Object.entries (MessagePrimaryContent)
 
-		if (!message_id) throw new Exception ('MessageID not detected')
+    	last.data = v
 
-		last.id = message_id	
+    	last.type = k
 
-		let {prim, type} = await this.fork ({type: 'soap_message', action: 'parse'}, {xml: body})
+			.replace (/Re(quest|sponse)$/, '') // method, not message name
 
-		let rsid = await this.fork ({type, part: 'rsid'})
-
-		last.type = type
-
-		let json = await conv.response ({path: `/${rsid}/xmlRequestToJson`}, prim)
-
-		last.data = Object.values (JSON.parse (json)) [0]
+			.replace (/[A-Z]/g,                // CamelCase to under_scores
+				(m, o) => (o ? '_' : '') + m.toLowerCase ()
+			)
 
 		return require ('fs').readFileSync ('./Static/send.xml')
 
     },
-        
+
 }
