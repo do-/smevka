@@ -1,6 +1,6 @@
 # Disclaimer
 
-This software is developed solely for integration with Russian government IT systems, so the rest of documentation is written in Russian language.
+This software is developed solely for integration with Russian government IT systems, so the Cyrillic script is widely used in its documentation.
 
 # Краткое описание
 
