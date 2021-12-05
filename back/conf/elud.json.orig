@@ -5,6 +5,11 @@
                 "port"    : 8000
         },
         
+        "ftp": {
+            "login": "...",
+            "password": "!!!"
+        },
+
         "smev": {
 		"converter_url": "http://..."
         },
