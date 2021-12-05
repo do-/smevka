@@ -134,7 +134,16 @@ get_response_of_export_debt_requests:
 		
 		})
 
-    	return {ExportDebtRequestsResponse: {"request-data": request_data}}
+    	return {
+    	
+    		ExportDebtRequestsResponse: {"request-data": request_data},
+    		
+    		_FSAttachmentsList: [
+    			{uuid: '78cbaf77-4ebe-11ec-977f-005056b665bf', FileName: '/78cbaf77-4ebe-11ec-977f-005056b665bf.zip'},
+    			{uuid: '78d9e04a-4ebe-11ec-977f-005056b665bf', FileName: '/78d9e04a-4ebe-11ec-977f-005056b665bf.zip'},
+    		],
+    		
+    	}
 
     },
         
