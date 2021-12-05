@@ -1,29 +1,12 @@
 <html>
 	<head>
 		<title>СМЭВка</title>
-		<script src="__/js.js"></script>
-		<link rel="stylesheet" type="text/css" href="__/css.css">
 	</head>
-	<body onload="main()">
-		<table cellspacing=0 cellpadding=0>
-			<tr>
-				<td width=40%>
-					<textarea autofocus name=xml placeholder="&lt;SOAP-ENV:Envelope blah-bla-blah...
-
-OR
-
-{&quot;MySMEVServiceMethodRequest&quot;: {&quot;information-system-id&quot;: ...
-
-OR
-
-double click to load file"></textarea>
-				</td>
-				<td valign=top>
-					<pre>
-					</pre>
-				</td>
-			</tr>
-		</table>
-		<input type=file name=file accept=".xml">
-	</body>
+	<FRAMESET rows="35,*">
+		<FRAME SRC=__/top.html NAME=top NORESIZE>
+		<FRAMESET cols="50%,50%">
+			<FRAME SRC=__/left.html  NAME=left>
+			<FRAME SRC=__/right.html NAME=right>
+		</FRAMESET>
+	</FRAMESET>
 </html>

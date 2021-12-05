@@ -1,8 +1,24 @@
 ////////////////////////////////////////////////////////////////////////////////
 
+function get_frame (name) {
+
+	return window.parent.frames [name].document
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 function get_textarea () {
 
-	return document.querySelectorAll ('textarea') [0]
+	return get_frame ('left').querySelectorAll ('textarea') [0]
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+function get_button (name) {
+
+	return document.querySelectorAll ('button[name=' + name + ']') [0]
 
 }
 
@@ -10,7 +26,7 @@ function get_textarea () {
 
 function get_file_input () {
 
-	return document.querySelectorAll ('input[type=file]') [0]
+	return get_frame ('left').querySelectorAll ('input[type=file]') [0]
 
 }
 
@@ -18,7 +34,7 @@ function get_file_input () {
 
 function say (s) {
 
-	document.querySelector ('pre').textContent = s;
+	return get_frame ('right').querySelector ('pre').textContent = s;
 
 }
 
@@ -68,7 +84,6 @@ async function refresh () {
 			
 			let j = await response.json ()
 
-console.log (j)
 			say (prettifyXml (j.content))
 
 		}
@@ -122,8 +137,12 @@ function load () {
 function main () {
 
 	get_file_input ().addEventListener ('change', load)
+	
+	const trigger_file_open = () => get_file_input ().click ()
 
-	get_textarea ().addEventListener ('dblclick', () => get_file_input ().click ())
+	get_textarea ().addEventListener ('dblclick', trigger_file_open)
+	
+	get_button ('load').addEventListener ('click', trigger_file_open)
 
 	for (let event of ['change', 'paste'])
 
