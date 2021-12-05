@@ -2,15 +2,29 @@
 	<HEAD>
 	</HEAD>
 	<BODY STYLE="margin:0;" BGCOLOR=#DDDDDD>
-		<TEXTAREA STYLE="width:100%; height:100%; border:0; resize:none; font-family:Courier; font-size: 16px; background: #dddddd" placeholder="&lt;SOAP-ENV:Envelope blah-bla-blah...
+		<STYLE>
+			button {
+				font-family: Times New Roman;
+				font-size: 12pt;
+				margin-top: 3px;
+			}
+			textarea {
+				width:100%;
+				height:calc(100% - 30px);
+				border:0;
+				outline: none;
+				resize:none;
+				font-family:Courier;
+				font-size: 16px;
+				background: #dddddd
+			}
+		</STYLE>
+		<BUTTON NAME=load>Загрузить...</BUTTON>
+		<TEXTAREA  placeholder="&lt;SOAP-ENV:Envelope blah-bla-blah...
 
-OR
+или
 
-{&quot;MySMEVServiceMethodRequest&quot;: {&quot;information-system-id&quot;: ...
-
-OR
-
-double click to load file"></TEXTAREA>
+{&quot;MySMEVServiceMethodRequest&quot;: {&quot;information-system-id&quot;: ..."></TEXTAREA>
 		<INPUT TYPE=file NAME=file ACCEPT=".xml" STYLE="display:none">
 	</BODY>
 </HTML>

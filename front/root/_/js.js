@@ -16,9 +16,9 @@ function get_textarea () {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-function get_button (name) {
+function get_button (frame, name) {
 
-	return document.querySelectorAll ('button[name=' + name + ']') [0]
+	return get_frame (frame).querySelectorAll ('button[name=' + name + ']') [0]
 
 }
 
@@ -32,9 +32,17 @@ function get_file_input () {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+function get_pre () {
+
+	return get_frame ('right').querySelector ('pre')
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 function say (s) {
 
-	return get_frame ('right').querySelector ('pre').textContent = s;
+	return get_pre ().textContent = s;
 
 }
 
@@ -89,7 +97,7 @@ async function refresh () {
 		}
 		catch (e) {
 		
-			say (' <-- here MUST be either a SOAP message or a JSON object')
+			say (' <-- Это должно быть либо SOAP-сообщение, либо объект JSON')
 		
 		}		
 
@@ -134,6 +142,16 @@ function load () {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+function move () {
+
+	get_textarea ().value = get_pre ().textContent
+	
+	refresh ()
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 function main () {
 
 	get_file_input ().addEventListener ('change', load)
@@ -142,7 +160,8 @@ function main () {
 
 	get_textarea ().addEventListener ('dblclick', trigger_file_open)
 	
-	get_button ('load').addEventListener ('click', trigger_file_open)
+	get_button ('left', 'load').addEventListener ('click', trigger_file_open)
+	get_button ('right', 'move').addEventListener ('click', move)
 
 	for (let event of ['change', 'paste'])
 
