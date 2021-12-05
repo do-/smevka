@@ -22,7 +22,7 @@ module.exports = class extends Dia.HTTP.Handler {
     }
     
     to_fault (x) {
-darn (x)    
+
     	let o = super.to_fault (x)
     	
     	o.content = `<error>\n<![CDATA[${x.stack || x}]]>\n</error>`
