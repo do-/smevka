@@ -90,19 +90,21 @@ get_response_of_export_debt_requests:
 								     	"type" : "1",
 								     	"attachment" : {
 											"metadata" : {
-											   "name" : "1.doc",
+											   "name" : "Анализ 18-20.pdf",
 											   "description" : "foo"
-											}
+											},
+											"smev-attachment-ref-guid": "78d9e04a-4ebe-11ec-977f-005056b665bf",
 								        }
 									},
 									{
 								     	"type" : "2",
 								     	"attachment" : {
 											"metadata" : {
-											   "name" : "2.xls",
+											   "name" : "Анализ 20-21.pdf",
 											   "description" : "bar"
-											}
-								        }
+											},
+											"smev-attachment-ref-guid": "78cbaf77-4ebe-11ec-977f-005056b665bf",
+								        },
 									},									
 								]
 							},
