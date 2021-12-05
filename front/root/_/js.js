@@ -152,6 +152,22 @@ function move () {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+async function copy () {
+
+	const doc = get_frame ('right'), sel = doc.getSelection ()
+
+	sel.selectAllChildren (get_pre ())
+
+	doc.execCommand ('copy')
+	
+	sel.removeAllRanges ()
+	
+	alert ('Ответ скопирован в буфер обмена')
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 function main () {
 
 	get_file_input ().addEventListener ('change', load)
@@ -162,6 +178,7 @@ function main () {
 	
 	get_button ('left', 'load').addEventListener ('click', trigger_file_open)
 	get_button ('right', 'move').addEventListener ('click', move)
+	get_button ('right', 'copy').addEventListener ('click', copy)
 
 	for (let event of ['change', 'paste'])
 
