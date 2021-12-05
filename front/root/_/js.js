@@ -65,10 +65,11 @@ async function refresh () {
 			await fetch ('/_back/?type=send_request&action=register', {method: 'POST', body})
 
 			let response = await fetch ('/_back/?type=get_response&action=reply_to', {method: 'POST'})
+			
+			let j = await response.json ()
 
-	  		let {content} = await response.json ()
-
-			say (prettifyXml (content))
+console.log (j)
+			say (prettifyXml (j.content))
 
 		}
 		catch (e) {

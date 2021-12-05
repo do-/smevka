@@ -21,6 +21,16 @@ module.exports = class extends Dia.HTTP.Handler {
         return true
     }
     
+    to_fault (x) {
+darn (x)    
+    	let o = super.to_fault (x)
+    	
+    	o.content = `<error>\n<![CDATA[${x.stack || x}]]>\n</error>`
+    	
+    	return o
+    
+    }    
+    
     w2ui_filter () {return new DiaW2uiFilter (this.rq)}
 
 }
