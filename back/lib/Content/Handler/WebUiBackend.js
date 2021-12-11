@@ -8,6 +8,7 @@ module.exports = class extends Dia.HTTP.Handler {
 		this.import ((require ('./Base')), [
 			'get_method_name',
 			'fork', 
+			'get_body_element',
 		])
     }
 

@@ -1,3 +1,4 @@
+const {XMLReader, SAXEvent, XMLLexer, MoxyLikeJsonEncoder} = require ('xml-toolkit')
 const {Transform} = require ('stream')
 const path = require ('path')
 const fs   = require ('fs')
@@ -39,5 +40,38 @@ module.exports = class {
 		})
 
 	}
+
+	async get_body_element (localName) {
+	
+		const lex = new XMLLexer ({})
+
+		const sax = new XMLReader ({
+			stripSpace : true,
+			collect    : e => true,
+			find       : e => e.localName === localName && e.type === SAXEvent.TYPES.END_ELEMENT,
+			map        : MoxyLikeJsonEncoder ()
+		})
+
+		lex.pipe (sax)
+
+		return new Promise ((ok, fail) => {
+		
+			lex.on ('error', fail)
+			sax.on ('error', fail)
+			
+			const not_found = () => fail (new Error (localName + ' not found'))
+			
+			sax.on ('end', not_found)
+
+			sax.on ('data', data => {
+				sax.off ('end', not_found)
+				ok (data)
+			})
+			
+			lex.end (this.body)
+		
+		})
+		
+	}	
 
 }

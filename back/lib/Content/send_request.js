@@ -1,5 +1,3 @@
-const {XMLReader} = require ('saxophone-object-stream')
-
 module.exports = {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,9 +35,7 @@ do_reply_to_send_request:
 
     	let {conv, last, body} = this
 
-    	let {MessageID, MessagePrimaryContent} = (await XMLReader.get (body, {
-    		localName : 'SenderProvidedRequestData'
-    	}))
+    	let {MessageID, MessagePrimaryContent} = await this.get_body_element ('SenderProvidedRequestData')
     	
     	this.body = JSON.stringify (MessagePrimaryContent)
     	
