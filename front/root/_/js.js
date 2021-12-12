@@ -108,7 +108,9 @@ async function refresh () {
   
   		let {content} = await response.json ()
   		
-  		say (JSON.stringify (content, null, 2))
+  		if (typeof content !== 'string') content = JSON.stringify (content, null, 2)
+  		
+  		say (content)
 	
 	}
 

@@ -26,7 +26,7 @@ module.exports = class extends Dia.HTTP.Handler {
 
     	let o = super.to_fault (x)
     	
-    	o.content = `<error>\n<![CDATA[${x.stack || x}]]>\n</error>`
+    	o.content = x.stack || x
     	
     	return o
     
