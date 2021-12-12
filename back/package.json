@@ -7,7 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "content-disposition": "^0.5.3",
-    "xml-toolkit": "^0.0.4",
+    "xml-toolkit": "^0.0.5",
     "winston": "^3.3.3"
   }
 }

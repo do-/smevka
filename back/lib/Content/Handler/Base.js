@@ -42,36 +42,21 @@ module.exports = class {
 	}
 
 	async get_body_element (localName) {
-	
-		const lex = new XMLLexer ({})
 
-		const sax = new XMLReader ({
-			stripSpace : true,
-			collect    : e => true,
-			find       : e => e.localName === localName && e.type === SAXEvent.TYPES.END_ELEMENT,
-			map        : MoxyLikeJsonEncoder ()
-		})
+		const e = await new XMLReader ({
 
-		lex.pipe (sax)
+			stripSpace     : true,
 
-		return new Promise ((ok, fail) => {
+			filterElements : localName,
+
+			map            : MoxyLikeJsonEncoder ()
+
+		}).process (this.body).findFirst ()
 		
-			lex.on ('error', fail)
-			sax.on ('error', fail)
-			
-			const not_found = () => fail (new Error (localName + ' not found'))
-			
-			sax.on ('end', not_found)
-
-			sax.on ('data', data => {
-				sax.off ('end', not_found)
-				ok (data)
-			})
-			
-			lex.end (this.body)
+		if (e === null) throw '#body#":' + localName + ' not found'
 		
-		})
-		
+		return e
+				
 	}	
 
 }
