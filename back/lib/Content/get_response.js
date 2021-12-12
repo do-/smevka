@@ -1,3 +1,5 @@
+const {XMLReader} = require ('xml-toolkit')
+
 module.exports = {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,13 +36,19 @@ do_reply_to_get_response:
 		
 		}
 		
-		let xml = await conv.response ({path: `/${rsid}/jsonResponseToXml`}, JSON.stringify (body))
+		const xml = await conv.response ({path: `/${rsid}/jsonResponseToXml`}, JSON.stringify (body))
 
-		xml = xml.replace ('OriginalMessageId>00000000-0000-0000-0000-000000000000<', 'OriginalMessageId>' + id + '<')
+		let s = ''; for await (const node of new XMLReader ().process (xml)) {
+				
+			s += 
+				node.isCharacters && node.parent.localName === 'OriginalMessageId' ? id : 
+				node.xml
+			
+			if (node.isEndElement && node.localName === 'MessageMetadata' && FSAttachmentsList) s += FSAttachmentsList 
+		
+		}
 
-		if (FSAttachmentsList) xml = xml.replace ('MessageMetadata></', `MessageMetadata>${FSAttachmentsList}</`)
-
-		return xml
+		return s
 
     },
         
