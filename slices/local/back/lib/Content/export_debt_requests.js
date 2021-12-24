@@ -55,8 +55,14 @@ get_response_of_export_debt_requests:
 				   "id" : "84b12e02-6ad8-11eb-9439-0242ac130002",
 				   "fio" : "Четвертак Иван Иванович"
 				},
+/*
+				"status" : "SENT",
+				"result" : "2",
+*/
+
 				"status" : "PROCESSED",
 				"result" : "4",
+				
 				"creation-date" : "2021-02-04+03:00",
 				"sent-date" : "2021-02-04+03:00",
 				"response-date" : "2021-02-08+03:00",
@@ -85,7 +91,7 @@ get_response_of_export_debt_requests:
 								   }
 								},
 								
-								"document" : [
+								"_document" : [
 									{
 								     	"type" : "1",
 								     	"attachment" : {
