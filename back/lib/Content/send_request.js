@@ -33,7 +33,7 @@ do_reply_to_send_request:
 
     async function () {
 
-    	let {conv, last, body} = this
+    	let {last, body} = this
 
     	let {MessageID, MessagePrimaryContent} = await this.get_body_element ('SenderProvidedRequestData')
     	

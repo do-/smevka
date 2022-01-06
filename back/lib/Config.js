@@ -9,9 +9,7 @@ module.exports = class extends Dia.Config {
         
         super (process.argv [2] || '../conf/elud.json', 'utf8')
         
-        let conv = new HTTP ({url: this.smev.converter_url})
-
-        this.pools = {conv, last: {}}
+        this.pools = {last: {}}
 
     }
 

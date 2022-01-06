@@ -7,8 +7,8 @@ module.exports = {
 do_reply_to_get_response:
 
     async function () {
-darn (this.last)
-    	let {conv, last: {type, id, data}} = this
+
+    	let {last: {type, id, data}} = this
 
 		let [xsd_path, body] = await Promise.all ([
 			this.fork ({type, part: 'xsd_path'}),
