@@ -2,6 +2,13 @@ const {XMLReader, SAXEvent, XMLLexer, MoxyLikeJsonEncoder} = require ('xml-toolk
 const {Transform} = require ('stream')
 const path = require ('path')
 const fs   = require ('fs')
+const stringEscape = require ('string-escape-map')
+
+const XML_BODY = new stringEscape ([
+  ['<', '&lt;'],
+  ['>', '&gt;'],
+  ['&', '&amp;'],
+])
 
 module.exports = class {
 
@@ -10,6 +17,18 @@ module.exports = class {
 		if (rq.part)   return 'get_' + rq.part + '_of_' + rq.type
 		if (rq.action) return 'do_'  + rq.action + '_' + rq.type
 		return (rq.id ? 'get_item_of_' : 'select_') + rq.type
+	}
+	
+	to_soap_fault (e) {
+
+		let s = '<?xml version="1.0" encoding="utf-8"?><SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header/><SOAP-ENV:Body><SOAP-ENV:Fault>'
+		
+		let m = ('' + e.message || e).trim ()
+
+		if (!/^<faultcode>/.test (m)) m = `<faultcode>SOAP-ENV:Server</faultcode><faultstring>${XML_BODY.escape (m)}</faultstring>`
+
+		return s + m + '</SOAP-ENV:Fault></SOAP-ENV:Body></SOAP-ENV:Envelope>'
+	
 	}
 
 	async fork (tia, data, pools) {

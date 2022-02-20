@@ -8,12 +8,21 @@ do_reply_to_get_response:
 
     async function () {
 
-    	let {last: {type, id, data}} = this
+    	let {last: {type, id, data}} = this, xsd_path, body
 
-		let [xsd_path, body] = await Promise.all ([
-			this.fork ({type, part: 'xsd_path'}),
-			this.fork ({type, part: 'response'}, {data}),
-		])		
+		try {
+
+			[xsd_path, body] = await Promise.all ([
+				this.fork ({type, part: 'xsd_path'}),
+				this.fork ({type, part: 'response'}, {data}),
+			])		
+
+		}
+		catch (e) {
+		
+	    	return this.to_soap_fault (e)
+		
+		}
 		
 		const xs = await XMLSchemata.fromFile (xsd_path)		
 
