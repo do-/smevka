@@ -6,9 +6,9 @@ do_register_send_request:
 
     async function () {
 
-    	let {last, data} = this
-    	
-    	let [[k, v]] = Object.entries (data)
+    	let {last, data, body} = this
+
+    	let [[k, v]] = Object.entries (data || JSON.parse (body))
 
     	const type = last.type = k
 
