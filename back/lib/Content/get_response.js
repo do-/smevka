@@ -8,8 +8,10 @@ do_reply_to_get_response:
 
     async function () {
 
-    	let {last: {type, id, data}} = this, xsd_path, body
+    	if (this.body && Math.random () <= this.conf.responses.empty_rate) return require ('fs').readFileSync ('./Static/empty_response.xml')
 
+    	let {conf, last: {type, id, data}} = this, xsd_path, body
+    	
 		try {
 
 			[xsd_path, body] = await Promise.all ([

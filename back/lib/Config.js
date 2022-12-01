@@ -10,7 +10,11 @@ module.exports = class extends Dia.Config {
         super (process.argv [2] || '../conf/elud.json', 'utf8')
         
         this.pools = {last: {}}
-
+        
+        if (!('responses' in this)) this.responses = {}
+        
+        if (isNaN (this.responses.empty_rate)) this.responses.empty_rate = 0
+        
     }
 
     init_logging () {
