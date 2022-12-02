@@ -85,10 +85,15 @@ async function refresh () {
 		try {
 		
 			JSON.parse (body)
+			
+			const id = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, function (c) {
+				var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+				return v.toString(16)}
+			)
 
-			await fetch ('/_back/?type=send_request&action=register', {method: 'POST', body})
+			await fetch ('/_back/?type=send_request&action=register&id=' + id, {method: 'POST', body})
 
-			let response = await fetch ('/_back/?type=get_response&action=reply_to', {method: 'POST'})
+			let response = await fetch ('/_back/?type=get_response&action=reply_to&id=' + id, {method: 'POST'})
 			
 			let j = await response.json ()
 
@@ -97,6 +102,8 @@ async function refresh () {
 		}
 		catch (e) {
 		
+			console.log (e)
+
 			say (' <-- Это должно быть либо SOAP-сообщение, либо объект JSON')
 		
 		}		
