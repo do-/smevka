@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+	<SOAP-ENV:Header/>
+	<SOAP-ENV:Body>
+		<ns2:GetResponseResponse xmlns:ns2="urn://x-artefacts-smev-gov-ru/services/message-exchange/types/1.1" xmlns:ns3="urn://x-artefacts-smev-gov-ru/services/message-exchange/types/basic/1.1" xmlns:ns4="urn://x-artefacts-smev-gov-ru/services/message-exchange/types/faults/1.1" />
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
