@@ -6,7 +6,7 @@ do_register_send_request:
 
     async function () {
 
-    	let {last, data, body, rq: {id}} = this
+    	let {uuid, last, data, body, rq: {id}} = this
 
     	let [[k, v]] = Object.entries (data || JSON.parse (body))
 
@@ -18,12 +18,10 @@ do_register_send_request:
 				(m, o) => (o ? '_' : '') + m.toLowerCase ()
 			)
 			
-		let r = {type, id}; r.data = await this.fork ({type, part: 'request'}, {data: v})
+		let r = {type, id, uuid}; r.data = await this.fork ({type, part: 'request'}, {data: v})
 		
 		last.set (id, r)
-
-//darn (last)
-
+darn (['send', last])
 		return {}
 
     },

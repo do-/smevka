@@ -14,7 +14,7 @@ do_reply_to_get_response:
 
 		let {id} = rq; if (!id) id = last.keys ().next ().value
 
-		const {type, data} = last.get (id)
+		const {type, data, uuid} = last.get (id)
 
 		try {
 
@@ -64,12 +64,12 @@ do_reply_to_get_response:
         <Response>
           <OriginalMessageId>${id}</OriginalMessageId>
           <SenderProvidedResponseData>
-            <MessageID>${this.uuid}</MessageID>
+            <MessageID>${uuid}</MessageID>
             <To/>
             <ns0:MessagePrimaryContent>${xs.stringify (body)}</ns0:MessagePrimaryContent>
           </SenderProvidedResponseData>
           <MessageMetadata>
-            <MessageId>${this.uuid}</MessageId>
+            <MessageId>${uuid}</MessageId>
             <MessageType>RESPONSE</MessageType>
             <Sender>
               <Mnemonic/>
