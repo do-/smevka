@@ -7,11 +7,15 @@ module.exports = {
 do_reply_to_get_response:
 
     async function () {
-
-    	if (this.body && Math.random () <= this.conf.responses.empty_rate) return require ('fs').readFileSync ('./Static/empty_response.xml')
-
-    	let {conf, last: {type, id, data}} = this, xsd_path, body
+    
+    	const {conf, rq, last} = this
     	
+    	let {id} = rq; if (!id) id = last.keys ().next ()
+
+//    	if (!id || !last.has (id) || (this.body && Math.random () <= conf.responses.empty_rate)) return require ('fs').readFileSync ('./Static/empty_response.xml')
+
+		const {type, data} = last.get (id)
+
 		try {
 
 			[xsd_path, body] = await Promise.all ([
@@ -30,7 +34,7 @@ do_reply_to_get_response:
 
 		let FSAttachmentsList = ''; if ('_FSAttachmentsList' in body) {
 		
-			const {login, password} = this.conf.ftp
+			const {login, password} = conf.ftp
 		
 			FSAttachmentsList = '<FSAttachmentsList xmlns="urn://x-artefacts-smev-gov-ru/services/message-exchange/types/basic/1.1">'
 

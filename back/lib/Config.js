@@ -9,7 +9,7 @@ module.exports = class extends Dia.Config {
         
         super (process.argv [2] || '../conf/elud.json', 'utf8')
         
-        this.pools = {last: {}}
+        this.pools = {last: new Map ()}
         
         if (!('responses' in this)) this.responses = {}
         

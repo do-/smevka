@@ -52,8 +52,6 @@ module.exports = class {
 
 			let h = new (require ('./Async')) ({user, conf, rq, pools, log_meta}, resolve, reject)
 
-			darn (b + ' -> ' + h.get_log_banner ())
-
 			setImmediate (() => h.run ())
 
 		})

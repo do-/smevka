@@ -6,11 +6,11 @@ do_register_send_request:
 
     async function () {
 
-    	let {last, data, body} = this
+    	let {last, data, body, rq: {id}} = this
 
     	let [[k, v]] = Object.entries (data || JSON.parse (body))
 
-    	const type = last.type = k
+    	const type = k
 
 			.replace (/Re(quest|sponse)$/, '') // method, not message name
 
@@ -18,12 +18,15 @@ do_register_send_request:
 				(m, o) => (o ? '_' : '') + m.toLowerCase ()
 			)
 			
-		last.data = await this.fork ({type, part: 'request'}, {data: v})
+		let r = {type, id}; r.data = await this.fork ({type, part: 'request'}, {data: v})
+		
+		last.set (id, r)
+
+//darn (last)
 
 		return {}
 
     },
-
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -34,8 +37,8 @@ do_reply_to_send_request:
     	let {last, body} = this
 
     	let {MessageID, MessagePrimaryContent} = await this.get_body_element ('SenderProvidedRequestData')
-    	
-    	last.id = MessageID
+
+    	this.rq.id = MessageID
 
     	this.data = MessagePrimaryContent
     	
