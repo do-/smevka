@@ -30,7 +30,7 @@ do_reply_to_get_response:
 		
 		}
 		
-		const xs = await XMLSchemata.fromFile (xsd_path)		
+		const xs = new XMLSchemata (xsd_path)		
 
 		let FSAttachmentsList = ''; if ('_FSAttachmentsList' in body) {
 		
