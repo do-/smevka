@@ -9,7 +9,6 @@ module.exports = class extends Dia.HTTP.Handler {
 			'check_params',
 			'get_method_name',
 			'fork', 
-			'get_body_element',
 			'to_soap_fault',
 		])
     }

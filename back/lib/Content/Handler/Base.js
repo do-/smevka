@@ -12,22 +12,6 @@ const XML_BODY = new stringEscape ([
   ['&', '&amp;'],
 ])
 
-const findFirst = (o, localName) => {
-	
-	if (localName in o) return o [localName]
-	
-	for (const v of Object.values (o)) if (v != null && typeof v === 'object') {
-	
-		const y = findFirst (v, localName)
-		
-		if (y != null) return y
-	
-	}
-	
-	return null
-
-}
-
 module.exports = class {
 
 	get_method_name () {
@@ -78,12 +62,6 @@ module.exports = class {
 
 		})
 
-	}
-
-	get_body_element (localName) {
-	
-		return findFirst (this.body_document, localName)
-				
 	}
 	
 	check_params () {
