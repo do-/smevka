@@ -32,9 +32,7 @@ do_reply_to_send_request:
 
     async function () {
 
-    	let {last, body} = this
-
-    	let {MessageID, MessagePrimaryContent} = this.get_body_element ('SenderProvidedRequestData')
+    	const {MessageID, MessagePrimaryContent} = this.body_document.Body.SendRequestRequest.SenderProvidedRequestData
 
     	this.rq.id = MessageID
 
