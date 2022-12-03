@@ -1,5 +1,4 @@
-const {XMLReader, SAXEvent, XMLLexer, MoxyLikeJsonEncoder, XMLParser, XMLNode} = require ('xml-toolkit')
-const {Transform} = require ('stream')
+const {XMLParser, XMLNode} = require ('xml-toolkit')
 const path = require ('path')
 const fs   = require ('fs')
 const stringEscape = require ('string-escape-map')
