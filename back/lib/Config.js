@@ -23,8 +23,8 @@ module.exports = class extends Dia.Config {
 
     	this.logging_container = new winston.Container ()
     	
-    	for (let category of ['app', 'db', 'http', 'queue', 'f_s']) this.logging_container.add (category, {
-    	
+    	for (let category of ['app']) this.logging_container.add (category, {
+
 			format: new Dia.Logger ({category}),
 
     		transports: [

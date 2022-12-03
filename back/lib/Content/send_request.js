@@ -21,7 +21,7 @@ do_register_send_request:
 		let r = {type, id, uuid}; r.data = await this.fork ({type, part: 'request'}, {data: v})
 		
 		last.set (id, r)
-darn (['send', last])
+
 		return {}
 
     },

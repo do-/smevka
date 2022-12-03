@@ -20,8 +20,6 @@ do_reply_to_ack:
     		last.delete (rq.id)
     	
     	}
-    	
-darn (['ack', last])
     
 		return require ('fs').readFileSync ('./Static/ack.xml')
     
