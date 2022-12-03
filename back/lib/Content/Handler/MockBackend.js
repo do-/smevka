@@ -4,6 +4,7 @@ module.exports = class extends Dia.HTTP.Handler {
     constructor (o) {
 		super (o)
 		this.import ((require ('./Base')), [
+			'check_params',
 			'fork', 
 			'get_body_element',
 			'to_soap_fault',

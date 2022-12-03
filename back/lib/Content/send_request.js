@@ -34,7 +34,7 @@ do_reply_to_send_request:
 
     	let {last, body} = this
 
-    	let {MessageID, MessagePrimaryContent} = await this.get_body_element ('SenderProvidedRequestData')
+    	let {MessageID, MessagePrimaryContent} = this.get_body_element ('SenderProvidedRequestData')
 
     	this.rq.id = MessageID
 

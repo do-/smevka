@@ -1,14 +1,33 @@
-const {XMLReader, SAXEvent, XMLLexer, MoxyLikeJsonEncoder} = require ('xml-toolkit')
+const {XMLReader, SAXEvent, XMLLexer, MoxyLikeJsonEncoder, XMLParser, XMLNode} = require ('xml-toolkit')
 const {Transform} = require ('stream')
 const path = require ('path')
 const fs   = require ('fs')
 const stringEscape = require ('string-escape-map')
+
+const dump = XMLNode.toObject ()
+const parse = xml => new XMLParser ().process (xml)
 
 const XML_BODY = new stringEscape ([
   ['<', '&lt;'],
   ['>', '&gt;'],
   ['&', '&amp;'],
 ])
+
+const findFirst = (o, localName) => {
+	
+	if (localName in o) return o [localName]
+	
+	for (const v of Object.values (o)) if (v != null && typeof v === 'object') {
+	
+		const y = findFirst (v, localName)
+		
+		if (y != null) return y
+	
+	}
+	
+	return null
+
+}
 
 module.exports = class {
 
@@ -39,18 +58,22 @@ module.exports = class {
 
 		let rq = {}
 
-		if (data) for (let k in data) rq [k] = data [k]
-		for (let k of ['type', 'id', 'action', 'part']) rq [k] = tia [k] || this.rq [k]
+		if (data) for (const k in data) rq [k] = data [k]
+		
+		for (const k of ['type', 'id', 'action', 'part']) rq [k] = tia [k] || this.rq [k]
+		
 		if (tia.part) {
 			rq.part = tia.part
 			delete rq.action
 		}
 
-		let b = this.get_log_banner (), log_meta = {parent: this.log_event}
+		const log_meta = {parent: this.log_event}, {body_document} = this
 
 		return new Promise (function (resolve, reject) {
 
 			let h = new (require ('./Async')) ({user, conf, rq, pools, log_meta}, resolve, reject)
+
+			h.body_document = body_document
 
 			setImmediate (() => h.run ())
 
@@ -58,22 +81,24 @@ module.exports = class {
 
 	}
 
-	async get_body_element (localName) {
-
-		const e = await new XMLReader ({
-
-			stripSpace     : true,
-
-			filterElements : localName,
-
-			map            : MoxyLikeJsonEncoder ()
-
-		}).process (this.body).findFirst ()
-		
-		if (e === null) throw '#body#":' + localName + ' not found'
-		
-		return e
+	get_body_element (localName) {
+	
+		return findFirst (this.body_document, localName)
 				
-	}	
+	}
+	
+	check_params () {
+		
+		if ('body' in this && !('body_document' in this)) {
+
+			const {body} = this
+
+			if (body.trim ().charAt (0) === '<')
+
+				this.body_document = dump (parse (this.body))
+
+		}
+	
+	}
 
 }

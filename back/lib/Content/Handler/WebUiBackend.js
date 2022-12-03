@@ -6,6 +6,7 @@ module.exports = class extends Dia.HTTP.Handler {
     constructor (o) {
 		super (o)
 		this.import ((require ('./Base')), [
+			'check_params',
 			'get_method_name',
 			'fork', 
 			'get_body_element',
@@ -31,8 +32,8 @@ module.exports = class extends Dia.HTTP.Handler {
     	
     	return o
     
-    }    
-    
+    }
+
     w2ui_filter () {return new DiaW2uiFilter (this.rq)}
 
 }
