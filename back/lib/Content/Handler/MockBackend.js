@@ -77,5 +77,40 @@ module.exports = class extends Dia.HTTP.Handler {
         rp.end (data)
 
 	}
+
+    send_out_error (x) {
+
+	    const {xs_smev, xs_soap} = this, {detail} = x
+	    
+	    let Fault = {
+			faultcode: 'SOAP-ENV:Server',
+			faultstring: x.message,
+		}
+
+		if (detail) Fault.detail = {
+			null: {
+				[xs_smev.stringify (detail)]: {}
+			}
+		}
+
+	    let soap = {
+			Envelope: {
+				Body: {
+					null: {
+						[xs_soap.stringify ({Fault})]: {}
+					}
+				}
+			}
+		}
+
+		const xml = "<?xml version='1.0' encoding='utf-8'?>" + xs_soap.stringify (soap)
+
+ 		let rp = this.http.response
+        rp.statusCode = 500
+        rp.setHeader ('Content-Type', 'application/soap+xml')
+        rp.end (xml)
+
+    }
+
     
 }

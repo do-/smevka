@@ -11,17 +11,34 @@ do_reply_to_ack:
     	const {last, body_document, rq, xs_smev, xs_soap} = this
 
     	if (body_document) {
+    	
+    		rq.id = null
 
-    		const uuid = body_document.Body.AckRequest.AckTargetMessage
+    		const uuid = body_document.Body.AckRequest.AckTargetMessage; if (uuid) {
 
-    		if (uuid) for (const [k, v] of last.entries ()) if (v.uuid == uuid) last.delete (k)
+    			for (const [k, v] of last.entries ()) if (v.uuid == uuid) {
+    			
+    				rq.id = k
+    				
+    				break
+    				
+    			}
+    			
+    			if (!rq.id) {
+    			
+    				let x = new Error (`SMEV-501: Сообщение ${uuid} не найдено среди неподтверждённых`)
+    				
+    				x.detail = {TargetMessageIsNotFound: {}}
+    				
+    				throw x
+    			
+    			}
+
+    		}
 
     	}
-    	else if (rq.id) {
 
-    		last.delete (rq.id)
-
-    	}
+    	if (rq.id) last.delete (rq.id)
 
     	return RESPONSE
 
