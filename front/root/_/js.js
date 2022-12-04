@@ -99,7 +99,9 @@ async function refresh () {
 
 			say (prettifyXml (j.content))
 
-			await fetch ('/_back/?type=ack&action=reply_to&id=' + id, {method: 'POST'})
+			response = await fetch ('/_back/?type=ack&action=reply_to&id=' + id, {method: 'POST'})
+
+			console.log (await response.json ())
 
 		}
 		catch (e) {

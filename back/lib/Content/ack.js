@@ -1,3 +1,5 @@
+const RESPONSE = {AckResponse: null}
+
 module.exports = {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -5,8 +7,8 @@ module.exports = {
 do_reply_to_ack:
 
     async function () {
-
-    	const {last, body_document, rq} = this
+    
+    	const {last, body_document, rq, xs_smev, xs_soap} = this
 
     	if (body_document) {
 
@@ -21,7 +23,7 @@ do_reply_to_ack:
 
     	}
 
-		return require ('fs').readFileSync ('./Static/ack.xml')
+    	return RESPONSE
 
     },
         

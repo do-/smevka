@@ -54,10 +54,28 @@ module.exports = class extends Dia.HTTP.Handler {
     }
 
     send_out_data (data) {
+    
+    	if (typeof data === 'object') {
+
+	    	const {xs_smev, xs_soap} = this
+
+			data = "<?xml version='1.0' encoding='utf-8'?>" + xs_soap.stringify ({
+				Envelope: {
+					Body: {
+						null: {
+							[xs_smev.stringify (data)]: {}
+						}
+					}
+				}
+			})
+
+    	}
+    
  		let rp = this.http.response
         rp.statusCode = 200
         rp.setHeader ('Content-Type', 'application/soap+xml')
         rp.end (data)
+
 	}
     
 }

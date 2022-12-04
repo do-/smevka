@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:types="urn://x-artefacts-smev-gov-ru/services/message-exchange/types/1.1" xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:tns="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:fault="urn://x-artefacts-smev-gov-ru/services/message-exchange/types/faults/1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" targetNamespace="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1">
+    <wsdl:documentation>Веб-сервис, предоставляемый СМЭВ, через который
+        все участники межведомственного взаимодействия обмениваются сообщениями.</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified">
+            <xs:import namespace="urn://x-artefacts-smev-gov-ru/services/message-exchange/types/1.1" schemaLocation="smev-message-exchange-types-1.1.xsd"/>
+            <xs:import namespace="urn://x-artefacts-smev-gov-ru/services/message-exchange/types/faults/1.1" schemaLocation="smev-message-exchange-faults-1.1.xsd"/>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="GetResponseRequestMsg">
+        <wsdl:part name="parameters" element="types:GetResponseRequest"/>
+    </wsdl:message>
+    <wsdl:message name="GetResponseResponseMsg">
+        <wsdl:part name="parameters" element="types:GetResponseResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SMEVFailureException">
+        <wsdl:part name="parameters" element="fault:SMEVFailure"/>
+    </wsdl:message>
+    <wsdl:message name="InvalidContentException">
+        <wsdl:part name="parameters" element="fault:InvalidContent"/>
+    </wsdl:message>
+    <wsdl:message name="UnknownMessageTypeException">
+        <wsdl:part name="parameters" element="fault:UnknownMessageType"/>
+    </wsdl:message>
+    <wsdl:message name="SenderIsNotRegisteredException">
+        <wsdl:part name="parameters" element="fault:SenderIsNotRegistered"/>
+    </wsdl:message>
+    <wsdl:message name="SignatureVerificationFaultException">
+        <wsdl:part name="parameters" element="fault:SignatureVerificationFault"/>
+    </wsdl:message>
+    <wsdl:message name="GetStatusRequestMsg">
+        <wsdl:part name="parameters" element="types:GetStatusRequest"/>
+    </wsdl:message>
+    <wsdl:message name="GetStatusResponseMsg">
+        <wsdl:part name="parameters" element="types:GetStatusResponse"/>
+    </wsdl:message>
+    <wsdl:message name="AckRequestMsg">
+        <wsdl:part name="parameters" element="types:AckRequest"/>
+    </wsdl:message>
+    <wsdl:message name="AckResponseMsg">
+        <wsdl:part name="parameters" element="types:AckResponse"/>
+    </wsdl:message>
+    <wsdl:message name="TargetMessageIsNotFoundException">
+        <wsdl:part name="parameters" element="fault:TargetMessageIsNotFound"/>
+    </wsdl:message>
+    <wsdl:message name="SendResponseRequestMsg">
+        <wsdl:part name="parameters" element="types:SendResponseRequest"/>
+    </wsdl:message>
+    <wsdl:message name="SendResponseResponseMsg">
+        <wsdl:part name="parameters" element="types:SendResponseResponse"/>
+    </wsdl:message>
+    <wsdl:message name="BusinessDataTypeIsNotSupportedException">
+        <wsdl:part name="parameters" element="fault:BusinessDataTypeIsNotSupported"/>
+    </wsdl:message>
+    <wsdl:message name="AttachmentSizeLimitExceededException">
+        <wsdl:part name="parameters" element="fault:AttachmentSizeLimitExceeded"/>
+    </wsdl:message>
+    <wsdl:message name="IncorrectResponseContentTypeException">
+        <wsdl:part name="parameters" element="fault:IncorrectResponseContentType"/>
+    </wsdl:message>
+    <wsdl:message name="QuoteLimitExceededException">
+        <wsdl:part name="parameters" element="fault:QuoteLimitExceeded"/>
+    </wsdl:message>
+    <wsdl:message name="MessageIsAlreadySentException">
+        <wsdl:part name="parameters" element="fault:MessageIsAlreadySent"/>
+    </wsdl:message>
+    <wsdl:message name="RecipientIsNotFoundException">
+        <wsdl:part name="parameters" element="fault:RecipientIsNotFound"/>
+    </wsdl:message>
+    <wsdl:message name="AttachmentContentMiscoordinationException">
+        <wsdl:part name="parameters" element="fault:AttachmentContentMiscoordination"/>
+    </wsdl:message>
+    <wsdl:message name="DestinationOverflowException">
+        <wsdl:part name="parameters" element="fault:DestinationOverflow"/>
+    </wsdl:message>
+    <wsdl:message name="InvalidMessageIdFormatException">
+        <wsdl:part name="parameters" element="fault:InvalidMessageIdFormat"/>
+    </wsdl:message>
+    <wsdl:message name="StaleMessageIdException">
+        <wsdl:part name="parameters" element="fault:StaleMessageId"/>
+    </wsdl:message>
+    <wsdl:message name="GetRequestRequestMsg">
+        <wsdl:part name="parameters" element="types:GetRequestRequest"/>
+    </wsdl:message>
+    <wsdl:message name="GetRequestResponseMsg">
+        <wsdl:part name="parameters" element="types:GetRequestResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SendRequestRequestMsg">
+        <wsdl:part name="parameters" element="types:SendRequestRequest"/>
+    </wsdl:message>
+    <wsdl:message name="SendRequestResponseMsg">
+        <wsdl:part name="parameters" element="types:SendRequestResponse"/>
+    </wsdl:message>
+    <wsdl:message name="TransactionCodeInvalidException">
+        <wsdl:part name="parameters" element="fault:TransactionCodeInvalid"/>
+    </wsdl:message>
+    <wsdl:message name="EndOfLifeException">
+        <wsdl:part name="parameters" element="fault:EndOfLifeReached"/>
+    </wsdl:message>
+    <wsdl:message name="AccessDeniedException">
+        <wsdl:part name="parameters" element="fault:AccessDenied"/>
+    </wsdl:message>
+    <wsdl:message name="GetIncomingQueueStatisticsRequestMsg">
+        <wsdl:part name="parameters" element="types:GetIncomingQueueStatisticsRequest"/>
+    </wsdl:message>
+    <wsdl:message name="GetIncomingQueueStatisticsResponseMsg">
+        <wsdl:part name="parameters" element="types:GetIncomingQueueStatisticsResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="SmevMessageExchangeServicePortType">
+        <wsdl:operation name="GetResponse">
+            <wsdl:documentation>Дай сообщение из моей входящей очереди _ответов_, если она не пуста.</wsdl:documentation>
+            <wsdl:input message="tns:GetResponseRequestMsg" wsaw:Action="urn:GetResponse"/>
+            <wsdl:output message="tns:GetResponseResponseMsg" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetResponseResponse"/>
+            <wsdl:fault message="tns:SMEVFailureException" name="SMEVFailureException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetResponse:Fault:SMEVFailureFault">
+                <wsdl:documentation>Сообщение невозможно принять по причине сбоя в инфраструктуре СМЭВ.
+                    Действия клиента: оповестить техподдержку СМЭВ, предпринимать повторные попытки доставить сообщение, без ограничения количества попыток.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:InvalidContentException" name="InvalidContentException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetResponse:Fault:InvalidContentFault">
+                <wsdl:documentation>Бизнес-конверт (//GetResponseRequest) содержит не все подэлементы, обязательные для заполнения, либо имеет неверный формат.
+                    Действия клиента: исправить ошибки и послать запрос повторно.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:UnknownMessageTypeException" name="UnknownMessageTypeException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetResponse:Fault:UnknownMessageTypeFault">
+                <wsdl:documentation>Указан тип сообщения, либо не зарегистрированный в СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SenderIsNotRegisteredException" name="SenderIsNotRegisteredException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetResponse:Fault:SenderIsNotRegisteredFault">
+                <wsdl:documentation>Отправитель сообщения не зарегистрирован в СМЭВ.
+                    Возможные причины:
+                    - смена X-400 имени при получении нового сертификата.
+                    - неправильная настройка СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SignatureVerificationFaultException" name="SignatureVerificationFaultException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetResponse:Fault:SignatureVerificationFaultFault">
+                <wsdl:documentation>ЭП-ОВ не прошла проверку.
+                    Действия клиента: см. описание {urn://x-artefacts-smev-gov-ru/smev-core/client-interaction/types/1.0}SignatureVerificationFault.</wsdl:documentation>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetStatus">
+            <wsdl:documentation>Дай сообщение из моей входящей очереди _запросов_, если она не пуста.</wsdl:documentation>
+            <wsdl:input message="tns:GetStatusRequestMsg" wsaw:Action="urn:GetStatus"/>
+            <wsdl:output message="tns:GetStatusResponseMsg" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetStatusResponse"/>
+            <wsdl:fault message="tns:SMEVFailureException" name="SMEVFailureException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetStatus:Fault:SMEVFailureFault">
+                <wsdl:documentation>Сообщение невозможно принять по причине сбоя в инфраструктуре СМЭВ.
+                    Действия клиента: оповестить техподдержку СМЭВ, предпринимать повторные попытки доставить сообщение, без ограничения количества попыток.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:InvalidContentException" name="InvalidContentException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetStatus:Fault:InvalidContentFault">
+                <wsdl:documentation>Бизнес-конверт (//GetStatusRequest) содержит не все подэлементы, обязательные для заполнения, либо имеет неверный формат.
+                    Действия клиента: исправить ошибки и послать запрос повторно.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:UnknownMessageTypeException" name="UnknownMessageTypeException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetStatus:Fault:UnknownMessageTypeFault">
+                <wsdl:documentation>a) Указан тип сообщения, либо не зарегистрированный в СМЭВ.
+                    b) Текущий клиент не является зарегистрированным поставщиком сведений по запрошенному типу сообщения.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SenderIsNotRegisteredException" name="SenderIsNotRegisteredException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetStatus:Fault:SenderIsNotRegisteredFault">
+                <wsdl:documentation>Отправитель сообщения не зарегистрирован в СМЭВ.
+                    Возможные причины:
+                    - смена X-400 имени при получении нового сертификата.
+                    - неправильная настройка СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SignatureVerificationFaultException" name="SignatureVerificationFaultException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetStatus:Fault:SignatureVerificationFaultFault">
+                <wsdl:documentation>ЭП-ОВ не прошла проверку.
+                    Действия клиента: см. описание {urn://x-artefacts-smev-gov-ru/smev-core/client-interaction/types/1.0}SignatureVerificationFault.</wsdl:documentation>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="Ack">
+            <wsdl:documentation>Подтверждение получения сообщения из очереди.
+                Должен вызваться после получения сообщения методами GetRequest или GetResponse.</wsdl:documentation>
+            <wsdl:input message="tns:AckRequestMsg" wsaw:Action="urn:Ack"/>
+            <wsdl:output message="tns:AckResponseMsg" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:AckResponse"/>
+            <wsdl:fault message="tns:SMEVFailureException" name="SMEVFailureException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:Ack:Fault:SMEVFailureFault">
+                <wsdl:documentation>Сообщение невозможно отправить по причине сбоя в инфраструктуре СМЭВ.
+                    Действия клиента: оповестить техподдержку СМЭВ, предпринимать повторные попытки доставить сообщение, без ограничения количества попыток.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:TargetMessageIsNotFoundException" name="TargetMessageIsNotFoundException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:Ack:Fault:TargetMessageIsNotFoundFault">
+                <wsdl:documentation>При попытке подтвердить получение сообщения, СМЭВ не находит неподтверждённого сообщения с таким ID.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:InvalidContentException" name="InvalidContentException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:Ack:Fault:InvalidContentFault">
+                <wsdl:documentation>Бизнес-конверт (//AckRequest) содержит не все подэлементы, обязательные для заполнения, либо имеет неверный формат.
+                    Действия клиента: исправить ошибки и послать запрос повторно.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SenderIsNotRegisteredException" name="SenderIsNotRegisteredException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:Ack:Fault:SenderIsNotRegisteredFault">
+                <wsdl:documentation>Отправитель сообщения не зарегистрирован в СМЭВ.
+                    Возможная причина - смена X-400 имени при получении нового сертификата.
+                    Остальные возможные причины - неправильная настройка СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SignatureVerificationFaultException" name="SignatureVerificationFaultException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:Ack:Fault:SignatureVerificationFaultFault">
+                <wsdl:documentation>ЭП-ОВ не прошла проверку.
+                    Действия клиента: см. описание {urn://x-artefacts-smev-gov-ru/smev-core/client-interaction/fault/1.0}SignatureVerificationFault.</wsdl:documentation>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="SendResponse">
+            <wsdl:documentation>Дай сообщение из моей входящей очереди, если она не пуста.</wsdl:documentation>
+            <wsdl:input message="tns:SendResponseRequestMsg" wsaw:Action="urn:SendResponse"/>
+            <wsdl:output message="tns:SendResponseResponseMsg" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponseResponse"/>
+            <wsdl:fault message="tns:SMEVFailureException" name="SMEVFailureException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:SMEVFailureFault">
+                <wsdl:documentation>Сообщение невозможно отправить по причине сбоя в инфраструктуре СМЭВ.
+                    Действия клиента: оповестить техподдержку СМЭВ, предпринимать повторные попытки доставить сообщение, без ограничения количества попыток.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:BusinessDataTypeIsNotSupportedException" name="BusinessDataTypeIsNotSupportedException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:BusinessDataTypeIsNotSupportedFault">
+                <wsdl:documentation>Ответ с таким полным именем корневого элемента не зарегистрирован в СМЭВ (см. //SendResponseRequest/MessagePrimaryContent/element()).
+                    Вероятные причины:
+                    ошибка при формировании содержательной части ответа (см. //SendResponseRequest/MessagePrimaryContent/element());
+                    схема, в которой описан XML-тип, ещё не зарегистрирован в СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:InvalidContentException" name="InvalidContentException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:InvalidContentFault">
+                <wsdl:documentation>Содержательная часть сообщения (//SendResponseRequest/PrimaryContent/element()) не прошла валидацию по XSD,
+                    зарегистрированной в СМЭВ для этого типа сообщений.
+                    Бизнес-конверт (//SendResponseRequest) содержит не все подэлементы, обязательные для заполнения, либо имеет неверный формат.
+                    Действия клиента: исправить ошибки и послать ответ повторно.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:AttachmentSizeLimitExceededException" name="AttachmentSizeLimitExceededException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:AttachmentSizeLimitExceededFault">
+                <wsdl:documentation>Суммарный размер вложений превысил предел, установленный правилами СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:IncorrectResponseContentTypeException" name="IncorrectResponseContentTypeException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:IncorrectResponseContentTypeFault">
+                <wsdl:documentation>Содержимое посылается через метод SendResponse,
+                    но, согласно реестру типов запросов СМЭВ, содержательная часть сообщения
+                    представляет из себя запрос или заявку, а не ответ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:QuoteLimitExceededException" name="QuoteLimitExceededException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:QuoteLimitExceededFault">
+                <wsdl:documentation>Суммарный размер вложений превысил значения квоты СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:MessageIsAlreadySentException" name="MessageIsAlreadySentException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:MessageIsAlreadySentFault">
+                <wsdl:documentation>Сообщение с таким MessageID уже было отправлено ранее.
+                    Возможно в следующих ситуациях:
+                    a) Клиент пытался отправить сообщение, отправка прошла успешно, но в конце взаимодействия HTTP соединение оборвалось,
+                    и клиент не получил ответ от СМЭВ об успешной отправке.
+                    При повторной попытке отправить сообщение клиент получит этот fault.
+                    В этой ситуации нужно прекратить пытаться повторно послать сообщение.
+                    b) Клиент использует алгоритм генерации ID сообщений, не соответствующий МР.
+                    c) Клиент пытается послать несколько сообщений, используя один и тот же ID.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:RecipientIsNotFoundException" name="RecipientIsNotFoundException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:RecipientIsNotFoundFault">
+                <wsdl:documentation>Содержимое посылается через метод SendResponse,
+                    но значение //SendResponseRequest/To/text(), по данным СМЭВ,
+                    не соотевтствует никакому получателю.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:AttachmentContentMiscoordinationException" name="AttachmentContentMiscoordinationException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:AttachmentContentMiscoordinationFault">
+                <wsdl:documentation>Заголовки вложений не соответствуют содержимому.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:DestinationOverflowException" name="DestinationOverflowException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:DestinationOverflowFault">
+                <wsdl:documentation>Очередь, в которую должен быть послано сообщение, переполнена.
+                    Действия клиента: обратиться в службу техподдержки СМЭВ, и продолжать посылать ответ повторно, до успеха.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SenderIsNotRegisteredException" name="SenderIsNotRegisteredException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:SenderIsNotRegisteredFault">
+                <wsdl:documentation>Отправитель сообщения не зарегистрирован в СМЭВ.
+                    Возможная причина - смена X-400 имени при получении нового сертификата.
+                    Остальные возможные причины - неправильная настройка СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SignatureVerificationFaultException" name="SignatureVerificationFaultException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:SignatureVerificationFaultFault">
+                <wsdl:documentation>ЭП-ОВ не прошла проверку.
+                    Действия клиента: см. описание {urn://x-artefacts-smev-gov-ru/smev-core/client-interaction/fault/1.0}SignatureVerificationFault.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:InvalidMessageIdFormatException" name="InvalidMessageIdFormatException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:InvalidMessageIdFormatFault">
+                <wsdl:documentation>Идентификатор, присвоенный сообщению отправителем, не является корректным строковым представлением UUID, вариант 1 (см. RFC-4122).</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:StaleMessageIdException" name="StaleMessageIdException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendResponse:Fault:StaleMessageIdFault">
+                <wsdl:documentation>Идентификатор (UUID), присвоенный сообщению отправителем, содержит старый timestamp.
+                    Возможно в следующих случаях:
+                    a) в системе отправителя неверно установлено время.
+                    Действия клиента: установить в операционной системе реальное время.
+                    b) в результате очень плохого качества связи, сообщение пытаются отправить в течение двух суток или более.
+                    Действия клиента: сгенерировать новый UUID, присвоить его сообщению, отправить сообщение.</wsdl:documentation>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetRequest">
+            <wsdl:documentation>Дай сообщение из моей входящей очереди _запросов_, если она не пуста.</wsdl:documentation>
+            <wsdl:input message="tns:GetRequestRequestMsg" wsaw:Action="urn:GetRequest"/>
+            <wsdl:output message="tns:GetRequestResponseMsg" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetRequestResponse"/>
+            <wsdl:fault message="tns:SMEVFailureException" name="SMEVFailureException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetRequest:Fault:SMEVFailureFault">
+                <wsdl:documentation>Сообщение невозможно принять по причине сбоя в инфраструктуре СМЭВ.
+                    Действия клиента: оповестить техподдержку СМЭВ, предпринимать повторные попытки доставить сообщение, без ограничения количества попыток.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:InvalidContentException" name="InvalidContentException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetRequest:Fault:InvalidContentFault">
+                <wsdl:documentation>Бизнес-конверт (//GetRequestRequest) содержит не все подэлементы, обязательные для заполнения, либо имеет неверный формат.
+                    Действия клиента: исправить ошибки и послать запрос повторно.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:UnknownMessageTypeException" name="UnknownMessageTypeException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetRequest:Fault:UnknownMessageTypeFault">
+                <wsdl:documentation>a) Указан тип сообщения, либо не зарегистрированный в СМЭВ.
+                    b) Текущий клиент не является зарегистрированным поставщиком сведений по запрошенному типу сообщения.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SenderIsNotRegisteredException" name="SenderIsNotRegisteredException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetRequest:Fault:SenderIsNotRegisteredFault">
+                <wsdl:documentation>Отправитель сообщения не зарегистрирован в СМЭВ.
+                    Возможные причины:
+                    - смена X-400 имени при получении нового сертификата.
+                    - неправильная настройка СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SignatureVerificationFaultException" name="SignatureVerificationFaultException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetRequest:Fault:SignatureVerificationFaultFault">
+                <wsdl:documentation>ЭП-ОВ не прошла проверку.
+                    Действия клиента: см. описание {urn://x-artefacts-smev-gov-ru/smev-core/client-interaction/types/1.0}SignatureVerificationFault.</wsdl:documentation>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="SendRequest">
+            <wsdl:documentation>Послать запрос.
+                Факт прихода запроса говорит о том, что СМЭВ удостоверился в том, что отправитель
+                имеет право на получение данных по этому типу запросов.
+                Дополнительный контроль доступа в ИС-поставщике данных запрещён.
+                Тип запроса идентифицируется полным именем (qualified name) элемента //SendRequestRequest/PrimaryContent/element().</wsdl:documentation>
+            <wsdl:input message="tns:SendRequestRequestMsg" wsaw:Action="urn:SendRequest"/>
+            <wsdl:output message="tns:SendRequestResponseMsg" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequestResponse"/>
+            <wsdl:fault message="tns:SMEVFailureException" name="SMEVFailureException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:SMEVFailureFault">
+                <wsdl:documentation>Сообщение невозможно принять по причине сбоя в инфраструктуре СМЭВ.
+                    Действия клиента: оповестить техподдержку СМЭВ, предпринимать повторные попытки доставить сообщение, без ограничения количества попыток.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:BusinessDataTypeIsNotSupportedException" name="BusinessDataTypeIsNotSupportedException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:BusinessDataTypeIsNotSupportedFault">
+                <wsdl:documentation>Запрос с таким полным именем корневого элемента не зарегистрирован в СМЭВ (см. //SendRequestRequest/MessagePrimaryContent/element()).
+                    Вероятные причины:
+                    ошибка при формировании содержательной части запроса (см. //SendRequestRequest/MessagePrimaryContent/element());
+                    запрос этого типа ещё не зарегистрирован в СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:InvalidContentException" name="InvalidContentException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:InvalidContentFault">
+                <wsdl:documentation>Содержательная часть сообщения (//SendRequestRequest/PrimaryContent/element()) не прошла валидацию по XSD,
+                    зарегистрированной в СМЭВ для этого типа запросов.
+                    Бизнес-конверт (//SendRequestRequest) содержит не все подэлементы, обязательные для заполнения, либо имеет неверный формат.
+                    Действия клиента: исправить ошибки и послать запрос повторно.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:AttachmentSizeLimitExceededException" name="AttachmentSizeLimitExceededException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:AttachmentSizeLimitExceededFault">
+                <wsdl:documentation>Суммарный размер вложений превысил предел, установленный правилами СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:TransactionCodeInvalidException" name="TransactionCodeInvalidException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:TransactionCodeInvalidFault"/>
+            <wsdl:fault message="tns:EndOfLifeException" name="EndOfLifeException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:EndOfLifeFault">
+                <wsdl:documentation>Превышено время жизни сообщения (end of life).
+                    Действия клиента: должны предприниматься повторные попытки доставить сообщение,
+                    возможно с увеличенным временем жизни.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:QuoteLimitExceededException" name="QuoteLimitExceededException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:QuoteLimitExceededFault">
+                <wsdl:documentation>Суммарный размер вложений превысил значения квоты СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:AccessDeniedException" name="AccessDeniedException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:AccessDeniedFault">
+                <wsdl:documentation>Отправителю не разрешено отправлять запросы этого типа.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:MessageIsAlreadySentException" name="MessageIsAlreadySentException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:MessageIsAlreadySentFault">
+                <wsdl:documentation>Сообщение с таким MessageID уже было отправлено ранее.
+                    Возможно в следующих ситуациях:
+                    a) Клиент пытался отправить сообщение, отправка прошла успешно, но в конце взаимодействия HTTP соединение оборвалось,
+                    и клиент не получил ответ от СМЭВ об успешной отправке.
+                    При повторной попытке отправить сообщение клиент получит этот fault.
+                    В этой ситуации нужно прекратить пытаться повторно послать сообщение.
+                    b) Клиент использует алгоритм генерации ID сообщений, не соответствующий МР.
+                    c) Клиент пытается послать несколько сообщений, используя один и тот же ID.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:RecipientIsNotFoundException" name="RecipientIsNotFoundException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:RecipientIsNotFoundFault">
+                <wsdl:documentation>Не найден получатель для запроса.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:AttachmentContentMiscoordinationException" name="AttachmentContentMiscoordinationException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:AttachmentContentMiscoordinationFault">
+                <wsdl:documentation>Заголовки вложений не соответствуют содержимому.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:DestinationOverflowException" name="DestinationOverflowException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:DestinationOverflowFault">
+                <wsdl:documentation>Очередь, в которую должен быть послано сообщение, переполнена.
+                    Действия клиента: обратиться в службу техподдержки СМЭВ, и продолжать посылать запрос повторно, до успеха.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SenderIsNotRegisteredException" name="SenderIsNotRegisteredException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:SenderIsNotRegisteredFault">
+                <wsdl:documentation>Отправитель сообщения не зарегистрирован в СМЭВ.
+                    Возможная причина - смена X-400 имени при получении нового сертификата.
+                    Остальные возможные причины - неправильная настройка СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SignatureVerificationFaultException" name="SignatureVerificationFaultException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:SignatureVerificationFaultFault">
+                <wsdl:documentation>ЭП-ОВ не прошла проверку.
+                    Действия клиента: см. описание {urn://x-artefacts-smev-gov-ru/smev-core/client-interaction/types/1.0}SignatureVerificationFault.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:InvalidMessageIdFormatException" name="InvalidMessageIdFormatException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:InvalidMessageIdFormatFault">
+                <wsdl:documentation>Идентификатор, присвоенный сообщению отправителем, не является корректным строковым представлением UUID, вариант 1 (см. RFC-4122).</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:StaleMessageIdException" name="StaleMessageIdException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:SendRequest:Fault:StaleMessageIdFault">
+                <wsdl:documentation>Идентификатор (UUID), присвоенный сообщению отправителем, содержит старый timestamp.
+                    Возможно в следующих случаях:
+                    a) в системе отправителя неверно установлено время.
+                    Действия клиента: установить в операционной системе реальное время.
+                    b) в результате очень плохого качества связи, сообщение пытаются отправить в течение двух суток или более.
+                    Действия клиента: сгенерировать новый UUID, присвоить его сообщению, отправить сообщение.</wsdl:documentation>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetIncomingQueueStatistics">
+            <wsdl:documentation>Получение статистики входящих очередей.</wsdl:documentation>
+            <wsdl:input message="tns:GetIncomingQueueStatisticsRequestMsg" wsaw:Action="urn:GetIncomingQueueStatistics"/>
+            <wsdl:output message="tns:GetIncomingQueueStatisticsResponseMsg" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetIncomingQueueStatisticsResponse"/>
+            <wsdl:fault message="tns:SMEVFailureException" name="SMEVFailureException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetIncomingQueueStatistics:Fault:SMEVFailureFault">
+                <wsdl:documentation>Сообщение невозможно отправить по причине сбоя в инфраструктуре СМЭВ.
+                    Действия клиента: оповестить техподдержку СМЭВ, предпринимать повторные попытки доставить сообщение, без ограничения количества попыток.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:InvalidContentException" name="InvalidContentException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetIncomingQueueStatistics:Fault:InvalidContentFault">
+                <wsdl:documentation>Бизнес-конверт (//GetIncomingQueueStatisticsRequest) содержит не все подэлементы, обязательные для заполнения, либо имеет неверный формат.
+                    Действия клиента: исправить ошибки и послать запрос повторно.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SenderIsNotRegisteredException" name="SenderIsNotRegisteredException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetIncomingQueueStatistics:Fault:SenderIsNotRegisteredFault">
+                <wsdl:documentation>Отправитель сообщения не зарегистрирован в СМЭВ.
+                    Возможная причина - смена X-400 имени при получении нового сертификата.
+                    Остальные возможные причины - неправильная настройка СМЭВ.</wsdl:documentation>
+            </wsdl:fault>
+            <wsdl:fault message="tns:SignatureVerificationFaultException" name="SignatureVerificationFaultException" wsaw:Action="urn://x-artefacts-smev-gov-ru/services/message-exchange/1.1:SMEVMessageExchangePortType:GetIncomingQueueStatistics:Fault:SignatureVerificationFaultFault">
+                <wsdl:documentation>ЭП-ОВ не прошла проверку.
+                    Действия клиента: см. описание {urn://x-artefacts-smev-gov-ru/smev-core/client-interaction/fault/1.0}SignatureVerificationFault.</wsdl:documentation>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="SmevMessageExchangeServiceSoap11Binding" type="tns:SmevMessageExchangeServicePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="GetResponse">
+            <soap:operation soapAction="urn:GetResponse" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="SMEVFailureException">
+                <soap:fault use="literal" name="SMEVFailureException"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidContentException">
+                <soap:fault use="literal" name="InvalidContentException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SignatureVerificationFaultException">
+                <soap:fault use="literal" name="SignatureVerificationFaultException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SenderIsNotRegisteredException">
+                <soap:fault use="literal" name="SenderIsNotRegisteredException"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownMessageTypeException">
+                <soap:fault use="literal" name="UnknownMessageTypeException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetStatus">
+            <soap:operation soapAction="urn:GetStatus" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="SMEVFailureException">
+                <soap:fault use="literal" name="SMEVFailureException"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidContentException">
+                <soap:fault use="literal" name="InvalidContentException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SignatureVerificationFaultException">
+                <soap:fault use="literal" name="SignatureVerificationFaultException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SenderIsNotRegisteredException">
+                <soap:fault use="literal" name="SenderIsNotRegisteredException"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownMessageTypeException">
+                <soap:fault use="literal" name="UnknownMessageTypeException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="Ack">
+            <soap:operation soapAction="urn:Ack" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="SMEVFailureException">
+                <soap:fault use="literal" name="SMEVFailureException"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidContentException">
+                <soap:fault use="literal" name="InvalidContentException"/>
+            </wsdl:fault>
+            <wsdl:fault name="TargetMessageIsNotFoundException">
+                <soap:fault use="literal" name="TargetMessageIsNotFoundException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SignatureVerificationFaultException">
+                <soap:fault use="literal" name="SignatureVerificationFaultException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SenderIsNotRegisteredException">
+                <soap:fault use="literal" name="SenderIsNotRegisteredException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="SendResponse">
+            <soap:operation soapAction="urn:SendResponse" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="BusinessDataTypeIsNotSupportedException">
+                <soap:fault use="literal" name="BusinessDataTypeIsNotSupportedException"/>
+            </wsdl:fault>
+            <wsdl:fault name="DestinationOverflowException">
+                <soap:fault use="literal" name="DestinationOverflowException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SignatureVerificationFaultException">
+                <soap:fault use="literal" name="SignatureVerificationFaultException"/>
+            </wsdl:fault>
+            <wsdl:fault name="AttachmentSizeLimitExceededException">
+                <soap:fault use="literal" name="AttachmentSizeLimitExceededException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SenderIsNotRegisteredException">
+                <soap:fault use="literal" name="SenderIsNotRegisteredException"/>
+            </wsdl:fault>
+            <wsdl:fault name="IncorrectResponseContentTypeException">
+                <soap:fault use="literal" name="IncorrectResponseContentTypeException"/>
+            </wsdl:fault>
+            <wsdl:fault name="QuoteLimitExceededException">
+                <soap:fault use="literal" name="QuoteLimitExceededException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SMEVFailureException">
+                <soap:fault use="literal" name="SMEVFailureException"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidContentException">
+                <soap:fault use="literal" name="InvalidContentException"/>
+            </wsdl:fault>
+            <wsdl:fault name="MessageIsAlreadySentException">
+                <soap:fault use="literal" name="MessageIsAlreadySentException"/>
+            </wsdl:fault>
+            <wsdl:fault name="RecipientIsNotFoundException">
+                <soap:fault use="literal" name="RecipientIsNotFoundException"/>
+            </wsdl:fault>
+            <wsdl:fault name="StaleMessageIdException">
+                <soap:fault use="literal" name="StaleMessageIdException"/>
+            </wsdl:fault>
+            <wsdl:fault name="AttachmentContentMiscoordinationException">
+                <soap:fault use="literal" name="AttachmentContentMiscoordinationException"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidMessageIdFormatException">
+                <soap:fault use="literal" name="InvalidMessageIdFormatException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetRequest">
+            <soap:operation soapAction="urn:GetRequest" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="SMEVFailureException">
+                <soap:fault use="literal" name="SMEVFailureException"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidContentException">
+                <soap:fault use="literal" name="InvalidContentException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SignatureVerificationFaultException">
+                <soap:fault use="literal" name="SignatureVerificationFaultException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SenderIsNotRegisteredException">
+                <soap:fault use="literal" name="SenderIsNotRegisteredException"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownMessageTypeException">
+                <soap:fault use="literal" name="UnknownMessageTypeException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="SendRequest">
+            <soap:operation soapAction="urn:SendRequest" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="AccessDeniedException">
+                <soap:fault use="literal" name="AccessDeniedException"/>
+            </wsdl:fault>
+            <wsdl:fault name="BusinessDataTypeIsNotSupportedException">
+                <soap:fault use="literal" name="BusinessDataTypeIsNotSupportedException"/>
+            </wsdl:fault>
+            <wsdl:fault name="DestinationOverflowException">
+                <soap:fault use="literal" name="DestinationOverflowException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SignatureVerificationFaultException">
+                <soap:fault use="literal" name="SignatureVerificationFaultException"/>
+            </wsdl:fault>
+            <wsdl:fault name="AttachmentSizeLimitExceededException">
+                <soap:fault use="literal" name="AttachmentSizeLimitExceededException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SenderIsNotRegisteredException">
+                <soap:fault use="literal" name="SenderIsNotRegisteredException"/>
+            </wsdl:fault>
+            <wsdl:fault name="QuoteLimitExceededException">
+                <soap:fault use="literal" name="QuoteLimitExceededException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SMEVFailureException">
+                <soap:fault use="literal" name="SMEVFailureException"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidContentException">
+                <soap:fault use="literal" name="InvalidContentException"/>
+            </wsdl:fault>
+            <wsdl:fault name="MessageIsAlreadySentException">
+                <soap:fault use="literal" name="MessageIsAlreadySentException"/>
+            </wsdl:fault>
+            <wsdl:fault name="RecipientIsNotFoundException">
+                <soap:fault use="literal" name="RecipientIsNotFoundException"/>
+            </wsdl:fault>
+            <wsdl:fault name="StaleMessageIdException">
+                <soap:fault use="literal" name="StaleMessageIdException"/>
+            </wsdl:fault>
+            <wsdl:fault name="EndOfLifeException">
+                <soap:fault use="literal" name="EndOfLifeException"/>
+            </wsdl:fault>
+            <wsdl:fault name="AttachmentContentMiscoordinationException">
+                <soap:fault use="literal" name="AttachmentContentMiscoordinationException"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidMessageIdFormatException">
+                <soap:fault use="literal" name="InvalidMessageIdFormatException"/>
+            </wsdl:fault>
+            <wsdl:fault name="TransactionCodeInvalidException">
+                <soap:fault use="literal" name="TransactionCodeInvalidException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetIncomingQueueStatistics">
+            <soap:operation soapAction="urn:GetIncomingQueueStatistics" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="SMEVFailureException">
+                <soap:fault use="literal" name="SMEVFailureException"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidContentException">
+                <soap:fault use="literal" name="InvalidContentException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SignatureVerificationFaultException">
+                <soap:fault use="literal" name="SignatureVerificationFaultException"/>
+            </wsdl:fault>
+            <wsdl:fault name="SenderIsNotRegisteredException">
+                <soap:fault use="literal" name="SenderIsNotRegisteredException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="SmevMessageExchangeService">
+        <wsdl:port name="SmevMessageExchangeServiceHttpSoap11Endpoint" binding="tns:SmevMessageExchangeServiceSoap11Binding">
+            <soap:address location="http://esb.smev.vpn:10180/services/SmevMessageExchangeService.SmevMessageExchangeServiceHttpSoap11Endpoint"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
