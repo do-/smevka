@@ -38,18 +38,9 @@ do_reply_to_send_request:
 
     	this.data = MessagePrimaryContent
     	
-    	try {
+	    await this.call ('do_register_send_request')
 
-	    	await this.call ('do_register_send_request')
-
-    	}
-    	catch (e) {
-
-	    	return this.to_soap_fault (e)
-
-    	}
-
-		return require ('fs').readFileSync ('./Static/send.xml')
+		return require ('fs').readFileSync ('./Static/send.xml', 'utf8')
 
     },
 
