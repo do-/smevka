@@ -10,7 +10,7 @@ do_reply_to_get_response:
     
     	const {conf, rq, last} = this
     	
-    	if (last.size === 0 || (this.body && Math.random () <= conf.responses.empty_rate)) return require ('fs').readFileSync ('./Static/empty_response.xml')
+    	if (last.size === 0 || (this.body && Math.random () <= conf.responses.empty_rate)) return require ('fs').readFileSync ('./Static/empty_response.xml', 'utf-8')
 
 		let {id} = rq; if (!id) id = last.keys ().next ().value
 
