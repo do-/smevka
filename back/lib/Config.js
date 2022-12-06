@@ -15,9 +15,11 @@ module.exports = class extends Dia.Config {
         	xs_soap: new XMLSchemata ('./Static/soap.xsd'),
         	xs_smev: new XMLSchemata ('./Static/smev-message-exchange-service-1.1.xsd'),
         }
+
+        if (!('requests' in this)) this.requests = {}
+        if (isNaN (this.requests.max)) this.requests.max = 1000
         
-        if (!('responses' in this)) this.responses = {}
-        
+        if (!('responses' in this)) this.responses = {}        
         if (isNaN (this.responses.empty_rate)) this.responses.empty_rate = 0
         
     }

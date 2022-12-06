@@ -5,6 +5,10 @@
                 "port"    : 8000
         },
 
+        "requests": {
+        	"max": 1000
+        },
+
         "responses": {
         	"empty_rate": 0.8
         },
