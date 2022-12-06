@@ -1,3 +1,8 @@
+const EMU = {
+	Mnemonic: 'emu',
+	HumanReadableName: 'emu',
+}
+
 module.exports = {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +45,23 @@ do_reply_to_send_request:
     	
 	    await this.call ('do_register_send_request')
 
-		return require ('fs').readFileSync ('./Static/send.xml', 'utf8')
+		return {
+			SendRequestResponse: {
+				MessageMetadata: {
+					MessageType: 'REQUEST',
+					Sender: EMU,
+					DestinationName: 'unknown',
+					Recipient: EMU,
+					SupplementaryData: {
+						DetectedContentTypeName: 'not detected',
+						InteractionType: 'NotDetected',
+					},
+					Status: 'requestIsQueued',
+					MessageId: MessageID,
+					SendingTimestamp: (new Date ()).toJSON (),
+				},
+			},
+		}
 
     },
 
