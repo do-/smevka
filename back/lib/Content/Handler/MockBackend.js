@@ -77,8 +77,34 @@ module.exports = class extends Dia.HTTP.Handler {
         rp.end (data)
 
 	}
+	
+	croak (o) {
+	
+    	const [[k, v]] = Object.entries (o)
+	    	
+	    let	x = new Error (v)
+	    	
+    	x.detail = {[k]: {}}
+
+		throw x
+	
+	}
 
     send_out_error (x) {
+    
+    	if (typeof x === 'object' && !(x instanceof Error)) {
+    	
+    		const e = Object.entries (x); if (e.length === 1) {
+
+	    		const [[k, v]] = e
+	    		
+	    		x = new Error (v)
+	    		
+	    		x.detail = {[k]: {}}
+
+    		}
+    	
+    	}
 
 	    const {xs_smev, xs_soap} = this, {detail} = x
 	    

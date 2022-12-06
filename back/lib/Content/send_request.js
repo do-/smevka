@@ -36,30 +36,16 @@ do_register_send_request:
 do_reply_to_send_request:
 
     async function () {
-    
+
     	const {conf, last} = this
 
-    	if (last.size >= conf.requests.max) {
-
-    		let x = new Error ('SMEV-600:Очередь, в которую должно быть отправлено сообщение, переполнена.')
-
-    		x.detail = {DestinationOverflow: {}}
-
-    		throw x
-
-    	}
+    	if (last.size >= conf.requests.max) this.croak ({DestinationOverflow: `SMEV-600:Очередь, в которую должно быть отправлено сообщение, переполнена.`})
 
     	const {MessageID, MessagePrimaryContent} = this.body_document.Body.SendRequestRequest.SenderProvidedRequestData
 
-    	if (last.has (MessageID)) {
+    	if (!is_uuid (MessageID)) this.croak ({InvalidMessageIdFormat: `SMEV-300:Недопустимый формат идентификатора сообщения. См. RFC-4122.`})
 
-    		let x = new Error (`SMEV-301:Сообщение с идентификатором ${MessageID} было послано ранее.`)
-
-    		x.detail = {MessageIsAlreadySent: {}}
-
-    		throw x
-
-    	}
+    	if (last.has (MessageID)) this.croak ({MessageIsAlreadySent: `SMEV-301:Сообщение с идентификатором ${MessageID} было послано ранее.`})
 
     	this.rq.id = MessageID
 

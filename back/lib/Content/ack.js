@@ -19,21 +19,13 @@ do_reply_to_ack:
     			for (const [k, v] of last.entries ()) if (v.uuid == uuid) {
     			
     				rq.id = k
-    				
+
     				break
     				
     			}
     			
-    			if (!rq.id) {
+    			if (!rq.id) this.croak ({TargetMessageIsNotFound: `SMEV-501: Сообщение ${uuid} не найдено среди неподтверждённых`})
     			
-    				let x = new Error (`SMEV-501: Сообщение ${uuid} не найдено среди неподтверждённых`)
-    				
-    				x.detail = {TargetMessageIsNotFound: {}}
-    				
-    				throw x
-    			
-    			}
-
     		}
 
     	}
@@ -43,5 +35,5 @@ do_reply_to_ack:
     	return RESPONSE
 
     },
-        
+
 }
