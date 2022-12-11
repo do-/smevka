@@ -1,3 +1,4 @@
+const {SOAP11, SOAPFault} = require ('xml-toolkit')
 const Dia = require ('../../Ext/Dia/Dia.js')
 module.exports = class extends Dia.HTTP.Handler {
     
@@ -91,50 +92,14 @@ module.exports = class extends Dia.HTTP.Handler {
 	}
 
     send_out_error (x) {
+        
+    	if ('detail' in x) x.detail = this.xs_smev.stringify (x.detail)
     
-    	if (typeof x === 'object' && !(x instanceof Error)) {
-    	
-    		const e = Object.entries (x); if (e.length === 1) {
-
-	    		const [[k, v]] = e
-	    		
-	    		x = new Error (v)
-	    		
-	    		x.detail = {[k]: {}}
-
-    		}
-    	
-    	}
-
-	    const {xs_smev, xs_soap} = this, {detail} = x
-	    
-	    let Fault = {
-			faultcode: 'SOAP-ENV:Server',
-			faultstring: x.message,
-		}
-
-		if (detail) Fault.detail = {
-			null: {
-				[xs_smev.stringify (detail)]: {}
-			}
-		}
-
-	    let soap = {
-			Envelope: {
-				Body: {
-					null: {
-						[xs_soap.stringify ({Fault})]: {}
-					}
-				}
-			}
-		}
-
-		const xml = "<?xml version='1.0' encoding='utf-8'?>" + xs_soap.stringify (soap)
-
  		let rp = this.http.response
         rp.statusCode = 500
         rp.setHeader ('Content-Type', 'application/soap+xml')
-        rp.end (xml)
+        
+        rp.end (SOAP11.message (new SOAPFault (x)))
 
     }
 
