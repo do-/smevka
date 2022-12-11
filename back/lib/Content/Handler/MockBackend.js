@@ -53,31 +53,6 @@ module.exports = class extends Dia.HTTP.Handler {
     	this.rq = {type, action: 'reply_to'}
 
     }
-
-    send_out_data (data) {
-    
-    	if (typeof data === 'object') {
-
-	    	const {xs_smev, xs_soap} = this
-
-			data = "<?xml version='1.0' encoding='utf-8'?>" + xs_soap.stringify ({
-				Envelope: {
-					Body: {
-						null: {
-							[xs_smev.stringify (data)]: {}
-						}
-					}
-				}
-			})
-
-    	}
-    
- 		let rp = this.http.response
-        rp.statusCode = 200
-        rp.setHeader ('Content-Type', 'application/soap+xml')
-        rp.end (data)
-
-	}
 	
 	croak (o) {
 	
@@ -94,14 +69,29 @@ module.exports = class extends Dia.HTTP.Handler {
     send_out_error (x) {
         
     	if ('detail' in x) x.detail = this.xs_smev.stringify (x.detail)
-    
- 		let rp = this.http.response
-        rp.statusCode = 500
-        rp.setHeader ('Content-Type', 'application/soap+xml')
-        
-        rp.end (SOAP11.message (new SOAPFault (x)))
+
+    	this.send_out_xml (500, SOAP11.message (new SOAPFault (x)))
 
     }
 
+    send_out_data (data) {
+    
+    	if (typeof data === 'object') data = SOAP11.message (this.xs_smev.stringify (data))
+    	
+    	this.send_out_xml (200, data)
+
+	}
+
+    send_out_xml (statusCode, xml) {
+    
+ 		const {response} = this.http
+ 		
+		response.writeHead (statusCode, {
+			'Content-Type': 'text/xml',
+		})
+
+        response.end (xml)
+
+	}
     
 }

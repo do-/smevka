@@ -12,7 +12,6 @@ module.exports = class extends Dia.Config {
         
         this.pools = {
         	last: new Map (),
-        	xs_soap: new XMLSchemata ('./Static/soap.xsd'),
         	xs_smev: new XMLSchemata ('./Static/smev-message-exchange-service-1.1.xsd'),
         }
 
