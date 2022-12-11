@@ -21,18 +21,6 @@ module.exports = class {
 		return (rq.id ? 'get_item_of_' : 'select_') + rq.type
 	}
 	
-	to_soap_fault (e) {
-
-		let s = '<?xml version="1.0" encoding="utf-8"?><SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header/><SOAP-ENV:Body><SOAP-ENV:Fault>'
-		
-		let m = ('' + e.message || e).trim ()
-
-		if (!/^<faultcode>/.test (m)) m = `<faultcode>SOAP-ENV:Server</faultcode><faultstring>${XML_BODY.escape (m)}</faultstring>`
-
-		return s + m + '</SOAP-ENV:Fault></SOAP-ENV:Body></SOAP-ENV:Envelope>'
-	
-	}
-
 	async fork (tia, data, pools) {
 
 		let {conf, user} = this
@@ -87,7 +75,7 @@ module.exports = class {
 						case 'GetResponseRequest': 
 							rq.type = 'get_response'
 							break
-						case 'Ack': 
+						case 'AckRequest': 
 							rq.type = 'ack'
 							break
 						default:

@@ -7,7 +7,6 @@ module.exports = class extends Dia.HTTP.Handler {
 		this.import ((require ('./Base')), [
 			'check_params',
 			'fork', 
-			'to_soap_fault',
 		])
     }
 
@@ -57,10 +56,8 @@ module.exports = class extends Dia.HTTP.Handler {
     }
 
     send_out_data (data) {
-    
-    	if (typeof data === 'object') data = SOAP11.message (this.xs_smev.stringify (data))
-    	
-    	this.send_out_xml (200, data)
+
+    	this.send_out_xml (200, SOAP11.message (this.xs_smev.stringify (data)))
 
 	}
 
@@ -69,7 +66,7 @@ module.exports = class extends Dia.HTTP.Handler {
  		const {response} = this.http
  		
 		response.writeHead (statusCode, {
-			'Content-Type': 'text/xml',
+			'Content-Type': SOAP11.contentType,
 		})
 
         response.end (xml)

@@ -20,7 +20,12 @@ module.exports = class extends Dia.Config {
         
         if (!('responses' in this)) this.responses = {}        
         if (isNaN (this.responses.empty_rate)) this.responses.empty_rate = 0
-        
+
+		if (this.ftp) {
+			if (!this.ftp.UserName) this.ftp.UserName = this.ftp.login
+			if (!this.ftp.Password) this.ftp.Password = this.ftp.password
+		}
+
     }
 
     init_logging () {

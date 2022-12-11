@@ -7,7 +7,6 @@ module.exports = class extends Async.Handler {
 		this.import ((require ('./Base')), [
 			'get_method_name',
 			'fork', 
-			'to_soap_fault',
 		])
 	}
 
