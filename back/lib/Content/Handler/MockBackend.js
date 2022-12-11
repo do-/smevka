@@ -51,24 +51,34 @@ module.exports = class extends Dia.HTTP.Handler {
         
     	if ('detail' in x) x.detail = this.xs_smev.stringify (x.detail)
 
-    	this.send_out_xml (500, SOAP11.message (new SOAPFault (x)))
+    	this.send_out_soap_message (500, new SOAPFault (x))
 
     }
 
     send_out_data (data) {
 
-    	this.send_out_xml (200, SOAP11.message (this.xs_smev.stringify (data)))
+    	this.send_out_soap_message (200, this.xs_smev.stringify (data))
 
 	}
 
-    send_out_xml (statusCode, xml) {
+    send_out_soap_message (statusCode, body) {
+    
+//    	const encoding = 'UTF-8'
     
  		const {response} = this.http
  		
+ 		const xml = SOAP11.message (body)
+// 		const xml = SOAP11.message (body, null, {declaration: {encoding}})
+ 		
+// 		const content = Buffer.from (xml, encoding)
+
 		response.writeHead (statusCode, {
 			'Content-Type': SOAP11.contentType,
+//			'Content-Type': SOAP11.contentType + '; charset=utf-8',
+//			'Content-Length': content.length
 		})
 
+//        response.end (content)
         response.end (xml)
 
 	}
