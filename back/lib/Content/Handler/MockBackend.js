@@ -36,24 +36,6 @@ module.exports = class extends Dia.HTTP.Handler {
         return false
     }
 
-    parse_http_request_body () {
-    
-    	const map = {
-    		SendRequest : 'send_request',
-    		GetResponse : 'get_response',
-    		Ack         : 'ack',
-    	}
-
-    	let {body} = this, [_, tag] = /<SOAP[\w\-]+:Body>\s*<(\w+)Request/.exec (body)
-
-    	if (!tag) throw new Error ('Cannot detect Request element in ' + body)
-
-    	let type = map [tag]; if (!type) throw new Error ('Unknown request type: ' + tag)
-    	
-    	this.rq = {type, action: 'reply_to'}
-
-    }
-	
 	croak (o) {
 	
     	const [[k, v]] = Object.entries (o)

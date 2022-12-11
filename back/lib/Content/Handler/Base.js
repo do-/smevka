@@ -70,9 +70,33 @@ module.exports = class {
 
 			const {body} = this
 
-			if (body.trim ().charAt (0) === '<')
+			if (body.trim ().charAt (0) === '<') {
 
 				this.body_document = dump (parse (this.body))
+				
+				let {rq} = this; if (!rq.type) {
+
+					const {Body} = this.body_document; if (!Body) throw new Error ('SOAP Body not found')
+
+					rq.action = 'reply_to'
+						
+					for (const k in Body) switch (k) {
+						case 'SendRequestRequest': 
+							rq.type = 'send_request'
+							break
+						case 'GetResponseRequest': 
+							rq.type = 'get_response'
+							break
+						case 'Ack': 
+							rq.type = 'ack'
+							break
+						default:
+							throw new Error ('Unknown request type: ' + k)
+					}
+			
+				}
+				
+			}
 
 		}
 	
