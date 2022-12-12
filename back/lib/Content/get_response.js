@@ -1,4 +1,4 @@
-const {XMLSchemata} = require ('xml-toolkit')
+const {XMLSchemata, SOAP11} = require ('xml-toolkit')
 
 const DUMMY = {
 	MessageType: 'RESPONSE',
@@ -13,6 +13,18 @@ const DUMMY = {
 }
 
 module.exports = {
+
+////////////////////////////////////////////////////////////////////////////////
+
+do_process_get_response:
+
+    async function () {
+    
+    	const data = await this.fork ({action: 'reply_to'})
+    	
+    	return SOAP11.message (this.xs_smev.stringify (data))
+    
+    },
 
 ////////////////////////////////////////////////////////////////////////////////
 

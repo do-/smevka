@@ -93,7 +93,7 @@ async function refresh () {
 
 			await fetch ('/_back/?type=send_request&action=register&id=' + id, {method: 'POST', body})
 
-			let response = await fetch ('/_back/?type=get_response&action=reply_to&id=' + id, {method: 'POST'})
+			let response = await fetch ('/_back/?type=get_response&action=process&id=' + id, {method: 'POST'})
 			
 			let j = await response.json ()
 
