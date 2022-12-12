@@ -23,8 +23,10 @@ module.exports = {
 get_json_of_soap_message:
 
 	async function () {
+	
+		const {body_document} = this
 
-		return scan (this.body_document)
+		return scan (body_document) || body_document
 
 	}
 
