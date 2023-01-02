@@ -94,11 +94,11 @@ const svcBack = new HttpJobSource (app, {
 				
 				if (body.trim ().charAt (0) === '<') {
 
-					this.body_document = dump (parse (this.body))
+					job.body_document = dump (parse (body))
 
-					let {rq} = this; if (!rq.type) {
+					let {rq} = job; if (!rq.type) {
 
-						const {Body} = this.body_document; if (Body) {
+						const {Body} = job.body_document; if (Body) {
 
 							rq.action = 'reply_to'
 
