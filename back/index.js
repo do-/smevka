@@ -3,13 +3,20 @@ const {HttpRouter, HttpJobSource, HttpParamReader, HttpStaticSite, HttpResultWri
 
 global.darn = s => console.log (s)
 
-//darn (require.cache)
+const conf = require (process.argv [2] || './conf/elud.json')
 
-const sts = new HttpStaticSite ({
+const staticSite = new HttpStaticSite ({
 	root: Path.join (__dirname, '..', 'front', 'root'),
 }).on ('error', darn)
 
-const router = new HttpRouter ({listen: {port: 8000}})
-	.add (sts)
+{
 
-router.listen ()
+	const {listen} = conf
+
+	const router = new HttpRouter ({listen})
+		.add (staticSite)
+
+	router.listen ()
+
+}
+
