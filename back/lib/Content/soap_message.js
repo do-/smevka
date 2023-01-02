@@ -1,3 +1,5 @@
+const {XMLParser, XMLNode} = require ('xml-toolkit')
+
 const localName = 'MessagePrimaryContent'	
 
 const scan = o => {
@@ -24,7 +26,7 @@ get_json_of_soap_message:
 
 	async function () {
 	
-		const {body_document} = this
+		const body_document = XMLNode.toObject () (new XMLParser ().process (this.body))
 
 		return scan (body_document) || body_document
 

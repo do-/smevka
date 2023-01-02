@@ -1,5 +1,5 @@
 const Path = require ('path')
-const {XMLParser, XMLNode, XMLSchemata} = require ('xml-toolkit')
+const {XMLParser, XMLNode, XMLSchemata, SOAP11, SOAPFault} = require ('xml-toolkit')
 const {Application} = require ('doix')
 const {HttpRouter, HttpJobSource, HttpParamReader, HttpStaticSite, HttpResultWriter} = require ('doix-http')
 
@@ -67,12 +67,21 @@ async function fork (tia, data = {}) {
 
 }
 
+async function call (k) {
+	
+	const f = this.module [k]
+	
+	return f.call (this)
+	
+}
+
 inject = job => {
 	job.uuid = Math.random ()
 	job.last = last
 	job.xs_smev = xs_smev
 	job.fork = fork
 	job.conf = conf
+	job.call = call
 }
 
 
@@ -81,53 +90,20 @@ inject = job => {
 
 const svcBack = new HttpJobSource (app, {
 
-	test: ({request: {url}}) => url.indexOf ('/_back/?') === 0,
+	test: ({request: {url}}) => url.indexOf ('/_back/') === 0,
 
 	methods: ['POST'],
 	
 	reader: new HttpParamReader ({
 		from: {
 			searchParams: true,
-			bodyString: (body, job) => {
-			
-				job.body = body	
-				
-				if (body.trim ().charAt (0) === '<') {
-
-					job.body_document = dump (parse (body))
-
-					let {rq} = job; if (!rq.type) {
-
-						const {Body} = job.body_document; if (Body) {
-
-							rq.action = 'reply_to'
-
-							for (const k in Body) switch (k) {
-								case 'SendRequestRequest': 
-									rq.type = 'send_request'
-									break
-								case 'GetResponseRequest': 
-									rq.type = 'get_response'
-									break
-								case 'AckRequest': 
-									rq.type = 'ack'
-									break
-							}
-						
-						}
-
-					}
-
-				}
-								
+			bodyString: (body, job) => {			
+				job.body = body					
 				return {}
-				
-			}	
-			
+			}				
 		}
-
 	}),
-	
+
 	writer: new HttpResultWriter ({
 		type: 'application/json',
 		stringify: content => JSON.stringify ({
@@ -139,7 +115,7 @@ const svcBack = new HttpJobSource (app, {
 	dumper: new HttpResultWriter ({
 		code: e => e.statusCode || 500,
 		type: 'application/json',
-		stringify: (err, job) => {darn (err);  JSON.stringify ({
+		stringify: (err, job) => {darn (err); return JSON.stringify ({
 			success: false, 
 			id: job.uuid,
 			dt: new Date ().toJSON ()
@@ -152,12 +128,80 @@ const svcBack = new HttpJobSource (app, {
 
 })
 
+
+
+
+
+const SMEV_RQ_TYPE = {
+	'SendRequestRequest': 'send_request',
+	'GetResponseRequest': 'get_response',
+	'AckRequest'        : 'ack',
+}
+
+const svcMock = new HttpJobSource (app, {
+
+	test: ({request: {url}}) => url.indexOf ('/_mock/') === 0,
+	
+	methods: ['POST'],
+	
+	reader: new HttpParamReader ({
+	
+		from: {		
+			searchParams: false,			
+			bodyString: (body, job) => {			
+				job.body = body					
+				job.body_document = dump (parse (body))
+				return {
+					type: SMEV_RQ_TYPE [Object.keys (job.body_document.Body)[0]],
+					action: 'reply_to',
+				}				
+			}				
+		}
+
+	}),
+
+	writer: new HttpResultWriter ({
+		type: SOAP11.contentType,
+		stringify: data => SOAP11.message (xs_smev.stringify (data))
+	}),
+
+	dumper: new HttpResultWriter ({
+		code: 500,
+		type: SOAP11.contentType,
+		stringify: (x, job) => {darn (x);
+    		if ('detail' in x) x.detail = xs_smev.stringify (x.detail)
+    		return SOAP11.message (new SOAPFault (x))		
+		}
+	}),
+
+	on: {
+		start: job => {
+			inject (job)
+			job.croak = (o) => {				
+			    const [[k, v]] = Object.entries (o)
+				let	x = new Error (v)				
+				x.detail = {[k]: {}}			
+				throw x				
+			}
+		}
+	},
+
+})
+
+
+
+
+
+
+
+
 {
 
 	const {listen} = conf
 
 	const router = new HttpRouter ({listen})
 		.add (svcBack)
+		.add (svcMock)
 		.add (staticSite)
 
 	router.listen ()
