@@ -7,7 +7,8 @@
   "license": "MIT",
   "dependencies": {
     "content-disposition": "^0.5.3",
-    "xml-toolkit": "^1.0.27",
-    "winston": "^3.3.3"
+    "doix-http": "^0.0.3",
+    "winston": "^3.3.3",
+    "xml-toolkit": "^1.0.27"
   }
 }
