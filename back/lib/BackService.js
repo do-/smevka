@@ -1,6 +1,6 @@
-const {HttpJobSource, HttpParamReader, HttpResultWriter} = require ('doix-http')
+const {WebService, HttpParamReader, HttpResultWriter} = require ('doix-http')
 
-module.exports = class extends HttpJobSource {
+module.exports = class extends WebService {
 
 	constructor (app, o = {}) {
 	

@@ -1,5 +1,5 @@
 const {XMLParser, XMLNode, SOAP11, SOAPFault} = require ('xml-toolkit')
-const {HttpJobSource, HttpParamReader, HttpResultWriter} = require ('doix-http')
+const {WebService, HttpParamReader, HttpResultWriter} = require ('doix-http')
 const dump = XMLNode.toObject ()
 const parse = xml => new XMLParser ().process (xml)
 
@@ -9,7 +9,14 @@ const SMEV_RQ_TYPE = {
 	'AckRequest'        : 'ack',
 }
 
-module.exports = class extends HttpJobSource {
+function croak (o) {				
+	const [[k, v]] = Object.entries (o)
+	let	x = new Error (v)				
+	x.detail = {[k]: {}}			
+	throw x				
+}
+
+module.exports = class extends WebService {
 
 	constructor (app, o = {}) {
 
@@ -18,6 +25,10 @@ module.exports = class extends HttpJobSource {
 	    super (app, {
 
 			methods: ['POST'],
+			
+			globals: {
+				croak,
+			},
 
 			reader: new HttpParamReader ({
 
@@ -48,17 +59,6 @@ module.exports = class extends HttpJobSource {
 					return SOAP11.message (new SOAPFault (x))		
 				}
 			}),
-
-			on: {
-				start: job => {
-					job.croak = (o) => {				
-						const [[k, v]] = Object.entries (o)
-						let	x = new Error (v)				
-						x.detail = {[k]: {}}			
-						throw x				
-					}
-				}
-			},
 			
 			...o
 
