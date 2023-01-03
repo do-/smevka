@@ -37,7 +37,7 @@ const app = new Application (conf)
 
 const svcBack = new HttpJobSource (app, {
 
-	test: ({request: {url}}) => url.indexOf ('/_back/') === 0,
+	location: '/_back',
 
 	methods: ['POST'],
 	
@@ -83,8 +83,9 @@ const SMEV_RQ_TYPE = {
 
 const svcMock = new HttpJobSource (app, {
 
-	test: ({request: {url}}) => url.indexOf ('/_mock/') === 0,
+	location: '/_mock',
 	
+
 	methods: ['POST'],
 	
 	reader: new HttpParamReader ({
