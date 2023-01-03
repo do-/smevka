@@ -1,6 +1,8 @@
 const Path = require ('path')
 const {XMLSchemata} = require ('xml-toolkit')
 const {Application} = require ('doix')
+const BackService = require ('./BackService.js')
+const MockService = require ('./MockService.js')
 
 async function fork (tia, data = {}) {
 
@@ -58,6 +60,18 @@ module.exports = class extends Application {
 
 	    })
 
+	}
+	
+	createBackService (o) {
+	
+		return new BackService (this, o)
+	
+	}
+
+	createMockService (o) {
+	
+		return new MockService (this, o)
+	
 	}
 
 }
