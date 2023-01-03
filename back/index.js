@@ -2,7 +2,9 @@ const Path = require ('path')
 const Application = require ('./lib/Application.js')
 const BackService = require ('./lib/BackService.js')
 const MockService = require ('./lib/MockService.js')
-const {HttpRouter, HttpStaticSite} = require ('doix-http')
+const StaticSite  = require ('./lib/StaticSite.js')
+
+const {HttpRouter} = require ('doix-http')
 
 global.darn = s => console.log (s)
 
@@ -22,10 +24,6 @@ const conf = require (process.argv [2] || './conf/elud.json')
 
 }
 
-const staticSite = new HttpStaticSite ({
-	root: Path.join (__dirname, '..', 'front', 'root'),
-}).on ('error', darn)
-
 const app = new Application (conf)
 
 {
@@ -35,7 +33,7 @@ const app = new Application (conf)
 	new HttpRouter ({listen})
 		.add (new BackService (app))
 		.add (new MockService (app))
-		.add (staticSite)
+		.add (new StaticSite ())
 		.listen ()
 
 }
