@@ -43,7 +43,7 @@ do_reply_to_send_request:
 
     	const {MessageID, MessagePrimaryContent} = this.body_document.Body.SendRequestRequest.SenderProvidedRequestData
 
-//    	if (!is_uuid (MessageID)) this.croak ({InvalidMessageIdFormat: `SMEV-300:Недопустимый формат идентификатора сообщения. См. RFC-4122.`})
+    	if (!is_uuid (MessageID)) this.croak ({InvalidMessageIdFormat: `SMEV-300:Недопустимый формат идентификатора сообщения. См. RFC-4122.`})
 
     	if (last.has (MessageID)) this.croak ({MessageIsAlreadySent: `SMEV-301:Сообщение с идентификатором ${MessageID} было послано ранее.`})
 

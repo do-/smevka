@@ -4,12 +4,20 @@ const {Application} = require ('doix')
 const BackService = require ('./BackService.js')
 const MockService = require ('./MockService.js')
 
+const {
+	v4: uuidv4,
+	validate: uuidValidate,
+	NIL: NIL_UUID,
+} = require ('uuid')
+
+global.is_uuid = uuidValidate
+global.ZERO_UUID = NIL_UUID
+
 async function fork (tia, data = {}) {
 
 	const job = this, {app} = job, {merger} = app.modules
 
 	const j = job.app.createJob ()
-	
 	
 	for (const o of [job.rq, tia, data]) for (const k in o) j.rq [k] = o [k]
 
@@ -43,7 +51,7 @@ module.exports = class extends Application {
 			},
 
 			generators: {
-				uuid: () => Math.random ()
+				uuid: () => uuidv4 ()
 			},
 
 			modules: {
