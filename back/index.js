@@ -15,8 +15,8 @@ const StaticSite  = require ('./lib/StaticSite.js')
 const app = new Application (conf)
 
 const {listen} = conf; new HttpRouter ({listen})
-	.add (new BackService (app))
-	.add (new MockService (app))
+	.add (new BackService (app, {location: '/_back'}))
+	.add (new MockService (app, {location: '/_mock'}))
 	.add (new StaticSite ())
 	.listen ()
 

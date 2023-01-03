@@ -2,12 +2,10 @@ const {HttpJobSource, HttpParamReader, HttpResultWriter} = require ('doix-http')
 
 module.exports = class extends HttpJobSource {
 
-	constructor (app) {
+	constructor (app, o = {}) {
 	
 	    super (app, {
 	    
-			location: '/_back',
-
 			methods: ['POST'],
 
 			reader: new HttpParamReader ({
@@ -37,6 +35,8 @@ module.exports = class extends HttpJobSource {
 					dt: new Date ().toJSON ()
 				})
 			}),
+			
+			...o
 
 	    })
 

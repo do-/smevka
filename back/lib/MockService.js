@@ -11,13 +11,11 @@ const SMEV_RQ_TYPE = {
 
 module.exports = class extends HttpJobSource {
 
-	constructor (app) {
+	constructor (app, o = {}) {
 
 		const xs_smev = app.globals.get ('xs_smev')
 	
 	    super (app, {
-	    
-			location: '/_mock',
 
 			methods: ['POST'],
 
@@ -61,6 +59,8 @@ module.exports = class extends HttpJobSource {
 					}
 				}
 			},
+			
+			...o
 
 	    })
 
