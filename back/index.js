@@ -1,12 +1,11 @@
 const Path = require ('path')
 const {XMLParser, XMLNode, XMLSchemata, SOAP11, SOAPFault} = require ('xml-toolkit')
-const {Application} = require ('doix')
+const Application = require ('./lib/Application.js')
 const {HttpRouter, HttpJobSource, HttpParamReader, HttpStaticSite, HttpResultWriter} = require ('doix-http')
 
 const dump = XMLNode.toObject ()
 const parse = xml => new XMLParser ().process (xml)
 
-const last = new Map ()
 const xs_smev = new XMLSchemata ('./lib/Static/smev-message-exchange-service-1.1.xsd')
 
 global.darn = s => console.log (s)
@@ -31,76 +30,7 @@ const staticSite = new HttpStaticSite ({
 	root: Path.join (__dirname, '..', 'front', 'root'),
 }).on ('error', darn)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-async function fork (tia, data = {}) {
-
-	const job = this, {app} = job, {merger} = app.modules
-
-	const j = job.app.createJob ()
-	
-	
-	for (const o of [job.rq, tia, data]) for (const k in o) j.rq [k] = o [k]
-
-	if ('part' in tia) delete j.rq.action
-	if ('action' in tia) delete j.rq.part
-
-	return j.toComplete ()
-
-}
-
-async function call (k) {
-	
-	const f = this.module [k]
-	
-	return f.call (this)
-	
-}
-
-
-const app = new Application ({
-
-	globals: {
-		last,
-		xs_smev,
-		fork,
-		conf,
-		call,
-	},
-
-	generators: {
-		uuid: () => Math.random ()
-	},
-
-	modules: {
-		dir: {
-			root: [
-				__dirname,
-				Path.join (__dirname, '..', 'slices')
-			],
-			filter: (str, arr) => arr.at (-1) === 'Content',
-			live: true,
-		},
-		watch: true,
-	},
-
-})
-
-
-
+const app = new Application (conf)
 
 
 
@@ -125,18 +55,18 @@ const svcBack = new HttpJobSource (app, {
 		type: 'application/json',
 		stringify: content => JSON.stringify ({
 			success: true, 
-			content: content, 
+			content, 
         })
 	}),
 
 	dumper: new HttpResultWriter ({
-		code: e => e.statusCode || 500,
+		code: e => 500,
 		type: 'application/json',
-		stringify: (err, job) => {darn (err); return JSON.stringify ({
+		stringify: (err, job) => JSON.stringify ({
 			success: false, 
 			id: job.uuid,
 			dt: new Date ().toJSON ()
-        })}
+        })
 	}),
 
 })
