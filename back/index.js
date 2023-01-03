@@ -1,12 +1,8 @@
 const Path = require ('path')
-const {XMLParser, XMLNode, XMLSchemata, SOAP11, SOAPFault} = require ('xml-toolkit')
 const Application = require ('./lib/Application.js')
-const {HttpRouter, HttpJobSource, HttpParamReader, HttpStaticSite, HttpResultWriter} = require ('doix-http')
-
-const dump = XMLNode.toObject ()
-const parse = xml => new XMLParser ().process (xml)
-
-const xs_smev = new XMLSchemata ('./lib/Static/smev-message-exchange-service-1.1.xsd')
+const BackService = require ('./lib/BackService.js')
+const MockService = require ('./lib/MockService.js')
+const {HttpRouter, HttpStaticSite} = require ('doix-http')
 
 global.darn = s => console.log (s)
 
@@ -32,122 +28,15 @@ const staticSite = new HttpStaticSite ({
 
 const app = new Application (conf)
 
-
-
-
-const svcBack = new HttpJobSource (app, {
-
-	location: '/_back',
-
-	methods: ['POST'],
-	
-	reader: new HttpParamReader ({
-		from: {
-			searchParams: true,
-			bodyString: (body, job) => {			
-				job.body = body					
-				return {}
-			}				
-		}
-	}),
-
-	writer: new HttpResultWriter ({
-		type: 'application/json',
-		stringify: content => JSON.stringify ({
-			success: true, 
-			content, 
-        })
-	}),
-
-	dumper: new HttpResultWriter ({
-		code: e => 500,
-		type: 'application/json',
-		stringify: (err, job) => JSON.stringify ({
-			success: false, 
-			id: job.uuid,
-			dt: new Date ().toJSON ()
-        })
-	}),
-
-})
-
-
-
-
-
-const SMEV_RQ_TYPE = {
-	'SendRequestRequest': 'send_request',
-	'GetResponseRequest': 'get_response',
-	'AckRequest'        : 'ack',
-}
-
-const svcMock = new HttpJobSource (app, {
-
-	location: '/_mock',
-	
-
-	methods: ['POST'],
-	
-	reader: new HttpParamReader ({
-	
-		from: {		
-			searchParams: false,			
-			bodyString: (body, job) => {			
-				job.body = body					
-				job.body_document = dump (parse (body))
-				return {
-					type: SMEV_RQ_TYPE [Object.keys (job.body_document.Body)[0]],
-					action: 'reply_to',
-				}				
-			}				
-		}
-
-	}),
-
-	writer: new HttpResultWriter ({
-		type: SOAP11.contentType,
-		stringify: data => SOAP11.message (xs_smev.stringify (data))
-	}),
-
-	dumper: new HttpResultWriter ({
-		code: 500,
-		type: SOAP11.contentType,
-		stringify: (x, job) => {darn (x);
-    		if ('detail' in x) x.detail = xs_smev.stringify (x.detail)
-    		return SOAP11.message (new SOAPFault (x))		
-		}
-	}),
-
-	on: {
-		start: job => {
-			job.croak = (o) => {				
-			    const [[k, v]] = Object.entries (o)
-				let	x = new Error (v)				
-				x.detail = {[k]: {}}			
-				throw x				
-			}
-		}
-	},
-
-})
-
-
-
-
-
-
-
-
 {
 
 	const {listen} = conf
 
-	const router = new HttpRouter ({listen})
-		.add (svcBack)
-		.add (svcMock)
+	new HttpRouter ({listen})
+		.add (new BackService (app))
+		.add (new MockService (app))
 		.add (staticSite)
-
-	router.listen ()
+		.listen ()
 
 }
 
