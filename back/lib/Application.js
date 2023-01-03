@@ -1,6 +1,6 @@
 const Path = require ('path')
 const {XMLSchemata} = require ('xml-toolkit')
-const LegacyApplication = require ('./LegacyApplication.js')
+const {LegacyApplication} = require ('doix-legacy')
 const BackService = require ('./BackService.js')
 const MockService = require ('./MockService.js')
 
