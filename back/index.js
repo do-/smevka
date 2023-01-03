@@ -34,7 +34,56 @@ const staticSite = new HttpStaticSite ({
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+async function fork (tia, data = {}) {
+
+	const job = this, {app} = job, {merger} = app.modules
+
+	const j = job.app.createJob ()
+	
+	
+	for (const o of [job.rq, tia, data]) for (const k in o) j.rq [k] = o [k]
+
+	if ('part' in tia) delete j.rq.action
+	if ('action' in tia) delete j.rq.part
+
+	return j.toComplete ()
+
+}
+
+async function call (k) {
+	
+	const f = this.module [k]
+	
+	return f.call (this)
+	
+}
+
+
 const app = new Application ({
+
+	globals: {
+		last,
+		xs_smev,
+		fork,
+		conf,
+		call,
+	},
+
+	generators: {
+		uuid: () => Math.random ()
+	},
 
 	modules: {
 		dir: {
@@ -51,52 +100,6 @@ const app = new Application ({
 })
 
 
-
-
-
-
-
-
-
-
-
-
-let inject
-
-async function fork (tia, data = {}) {
-
-	const job = this, {app} = job, {merger} = app.modules
-
-	const j = job.app.createJob ()
-	
-	
-	for (const o of [job.rq, tia, data]) for (const k in o) j.rq [k] = o [k]
-
-	if ('part' in tia) delete j.rq.action
-	if ('action' in tia) delete j.rq.part
-
-	inject (j)
-
-	return j.toComplete ()
-
-}
-
-async function call (k) {
-	
-	const f = this.module [k]
-	
-	return f.call (this)
-	
-}
-
-inject = job => {
-	job.uuid = Math.random ()
-	job.last = last
-	job.xs_smev = xs_smev
-	job.fork = fork
-	job.conf = conf
-	job.call = call
-}
 
 
 
@@ -135,10 +138,6 @@ const svcBack = new HttpJobSource (app, {
 			dt: new Date ().toJSON ()
         })}
 	}),
-
-	on: {
-		start: inject		
-	},
 
 })
 
@@ -190,7 +189,6 @@ const svcMock = new HttpJobSource (app, {
 
 	on: {
 		start: job => {
-			inject (job)
 			job.croak = (o) => {				
 			    const [[k, v]] = Object.entries (o)
 				let	x = new Error (v)				
