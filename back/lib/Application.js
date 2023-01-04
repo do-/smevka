@@ -1,7 +1,8 @@
 const Path = require ('path')
 const {XMLSchemata} = require ('xml-toolkit')
 const {LegacyApplication} = require ('doix-legacy')
- 
+const winston    = require ('winston')
+
 const BackService = require ('./BackService.js')
 const MockService = require ('./MockService.js')
 
@@ -41,6 +42,11 @@ class ConsoleLogger {
 	}
 
 }
+
+
+
+
+
 
 class EventLogger {
 
@@ -110,7 +116,20 @@ class JobEventLogger extends EventLogger {
 
 	errorMessage () {
 	
-		return this.message ('' + this.job.error, 'error')
+		const {error} = this.job
+
+		let s; if (error instanceof Error) {
+		
+			s = error.stack.split ('\n').map (s => s.trim ()).join (' ').trim ()
+		
+		}
+		else {
+		
+			s = '' + error
+		
+		}
+	
+		return this.message (s, 'error')
 		
 	}
 
@@ -122,9 +141,47 @@ class JobEventLogger extends EventLogger {
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = class extends LegacyApplication {
 
 	constructor (conf) {
+	
+	
+	
+	
+	
+	
+	
+const logger = winston.createLogger ({
+	transports: [
+//		new winston.transports.Console(),
+		new winston.transports.File ({filename: conf.logs + '/app.log'})
+	],
+	format: winston.format.combine(
+		winston.format.timestamp ({format: 'YYYY-MM-DD HH:mm:ss.SSS'}),
+		winston.format.printf (
+			info => `${info.timestamp} [${info.level}]: ${info.message}`
+		)
+	),
+})	
+	
+	
+	
+	
+	
+	
 
 	    super ({
 	    
@@ -132,7 +189,7 @@ module.exports = class extends LegacyApplication {
 				conf,
 				last: new Map (),
 				xs_smev,
-				logger: new ConsoleLogger (),
+				logger//: new ConsoleLogger (),
 			},
 			
 			generators: {			
