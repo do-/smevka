@@ -21,7 +21,7 @@ do_process_get_response:
     async function () {
     
     	const data = await this.fork ({action: 'reply_to'})
-darn ({data})    	
+
     	return SOAP11.message (this.xs_smev.stringify (data))
     
     },

@@ -54,7 +54,7 @@ module.exports = class extends WebService {
 			dumper: new HttpResultWriter ({
 				code: 500,
 				type: SOAP11.contentType,
-				stringify: (x, job) => {darn (x);
+				stringify: (x, job) => {
 					if ('detail' in x) x.detail = xs_smev.stringify (x.detail)
 					return SOAP11.message (new SOAPFault (x))		
 				}
