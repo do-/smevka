@@ -1,6 +1,7 @@
 const Path = require ('path')
 const {XMLSchemata} = require ('xml-toolkit')
 const {LegacyApplication} = require ('doix-legacy')
+ 
 const BackService = require ('./BackService.js')
 const MockService = require ('./MockService.js')
 
@@ -44,8 +45,18 @@ class EventLogger {
 	}
 
 	getPrefix () {
+	
+		let s = '', j = this.job
+		
+		while (j) {
+			
+			s = !s ? j.uuid : j.uuid + '/' + s
 
-		return this.job.uuid
+			j = j.parent
+			
+		}
+
+		return s
 
 	}
 
@@ -103,9 +114,9 @@ module.exports = class extends LegacyApplication {
 						__dirname,
 						Path.join (__dirname, '..', '..', 'slices')
 					],
-					live: true,
+//					live: true,
 				},
-				watch: true,
+//				watch: true,
 			},
 
 	    })
