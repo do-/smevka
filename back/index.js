@@ -12,7 +12,7 @@ const appLogger = createLogger (conf, 'app')
 
 const app = new Application (conf, appLogger)
 
-const {listen} = conf; new HttpRouter ({listen})
+const {listen} = conf; new HttpRouter ({listen, logger: appLogger})
 	.add (app.createBackService ({location: '/_back'}))
 	.add (app.createMockService ({location: '/_mock'}))
 	.add (staticSite)

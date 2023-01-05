@@ -6,8 +6,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "doix": "^0.0.24",
-    "doix-http": "^0.0.6",
+    "doix": "^0.0.28",
+    "doix-http": "^0.0.8",
     "doix-legacy": "^0.0.4",
     "winston": "^3.3.3",
     "xml-toolkit": "^1.0.27"
