@@ -11,21 +11,8 @@ const xs_smev = new XMLSchemata (Path.join (__dirname, 'Static', 'smev-message-e
 
 module.exports = class extends LegacyApplication {
 
-	constructor (conf) {
-	
-const logger = winston.createLogger ({
-	transports: [
-//		new winston.transports.Console(),
-		new winston.transports.File ({filename: conf.logs + '/app.log'})
-	],
-	format: winston.format.combine(
-		winston.format.timestamp ({format: 'YYYY-MM-DD HH:mm:ss.SSS'}),
-		winston.format.printf (
-			info => `${info.timestamp} [${info.level}]: ${info.message}`
-		)
-	),
-})	
-	
+	constructor (conf, logger) {
+
 	    super ({
 	    
 			globals: {
