@@ -9,9 +9,17 @@ const MockService = require ('./MockService.js')
 
 const xs_smev = new XMLSchemata (Path.join (__dirname, 'Static', 'smev-message-exchange-service-1.1.xsd'))
 
+//const pg = require ('pg')
+const DbPoolPg = require ('./DbPoolPg.js')
+
 module.exports = class extends LegacyApplication {
 
 	constructor (conf, logger) {
+
+
+		const dbPool = new DbPoolPg (conf.db)
+
+
 
 	    super ({
 	    
@@ -19,6 +27,7 @@ module.exports = class extends LegacyApplication {
 				conf,
 				last: new Map (),
 				xs_smev,
+				dbPool,
 				logger//: new ConsoleLogger (),
 			},
 			
@@ -34,7 +43,7 @@ module.exports = class extends LegacyApplication {
 					],
 //					live: true,
 				},
-//				watch: true,
+				watch: true,
 			},
 
 	    })

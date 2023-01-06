@@ -9,6 +9,7 @@
     "doix": "^0.0.28",
     "doix-http": "^0.0.8",
     "doix-legacy": "^0.0.4",
+    "pg": "^8.8.0",
     "winston": "^3.3.3",
     "xml-toolkit": "^1.0.27"
   }
