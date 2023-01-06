@@ -33,6 +33,7 @@ module.exports = class extends LegacyApplication {
 			
 			generators: {			
 				eventLogger: job => new JobEventLogger (job),
+				db: job => dbPool.setProxy (job, 'db'),
 			},
 
 			modules: {
