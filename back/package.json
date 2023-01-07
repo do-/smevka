@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "doix": "^0.0.34",
+    "doix-db-postgresql": "^0.0.1",
     "doix-http": "^0.0.8",
     "doix-legacy": "^0.0.4",
     "pg": "^8.8.0",

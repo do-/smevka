@@ -3,7 +3,7 @@ global.darn = s => console.log (s)
 const Path         = require ('path')
 const {HttpRouter} = require ('doix-http')
 
-const DbPoolPg = require ('./lib/DbPoolPg.js')
+const {DbPoolPg} = require ('doix-db-postgresql')
 
 const staticSite   = require ('./lib/StaticSite.js')
 const conf         = require ('./lib/Conf.js')
