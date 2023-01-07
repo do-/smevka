@@ -1,22 +1,26 @@
 const pg = require ('pg')
+const {ResourcePool} = require ('doix')
 
-const ResourcePool = require ('./ResourcePool.js')
-const DbClientPg   = require ('./DbClientPg.js')
+const DbClientPg = require ('./DbClientPg.js')
 
 class DbPoolPg extends ResourcePool {
 
-	constructor (conf) {
-	
+	constructor (o) {
+
 		super ()
-		
+
 		this.wrapper = DbClientPg
 
-		this.pool = new pg.Pool (conf)
-	
+		this.pool = new pg.Pool (o.db)
+
+		this.logger = o.logger
+
+		this.eventLoggerClass = o.eventLoggerClass || require ('./DbEventLoggerPg.js')
+
 	}
 
 	async acquire () {
-	
+
 		return this.pool.connect ()
 
 	}

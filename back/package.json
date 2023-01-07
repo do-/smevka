@@ -6,7 +6,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "doix": "^0.0.28",
+    "doix": "^0.0.34",
     "doix-http": "^0.0.8",
     "doix-legacy": "^0.0.4",
     "pg": "^8.8.0",
